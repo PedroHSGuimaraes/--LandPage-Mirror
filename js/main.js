@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initFAQToggle();
   initDemoForm();
   initSmoothScrolling();
+  initToastContainer(); // Inicializa o container para os toasts
 });
 
 /**
@@ -80,17 +81,26 @@ function initMobileMenu() {
  */
 function initCountersAnimation() {
   const counters = document.querySelectorAll(".counter");
-  const speed = 200;
+  // Ajustando speed para um valor menor para melhorar a animação
+  const speed = 50;
 
   const animateCounter = function () {
     counters.forEach((counter) => {
       const target = parseInt(counter.getAttribute("data-target"));
       const count = parseInt(counter.innerText);
-      const increment = Math.trunc(target / speed);
+
+      // Calculando um incremento mínimo para garantir que todos os contadores funcionem
+      // Para valores pequenos, usar incremento fixo de 1
+      let increment = Math.max(1, Math.trunc(target / speed));
+
+      // Para números menores que 100, usar incremento menor
+      if (target < 100) {
+        increment = 1;
+      }
 
       if (count < target) {
-        counter.innerText = count + increment;
-        setTimeout(animateCounter, 1);
+        counter.innerText = Math.min(count + increment, target);
+        setTimeout(animateCounter, 20);
       } else {
         counter.innerText = target;
       }
@@ -98,14 +108,24 @@ function initCountersAnimation() {
   };
 
   // Inicia a animação quando os elementos estiverem visíveis
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        animateCounter();
-        observer.unobserve(entry.target);
-      }
-    });
-  });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Reiniciar o contador para 0 antes de iniciar a animação
+          const counter = entry.target;
+          counter.innerText = "0";
+          setTimeout(() => {
+            animateCounter();
+          }, 100);
+          observer.unobserve(counter);
+        }
+      });
+    },
+    {
+      threshold: 0.1, // Iniciar animação quando pelo menos 10% do elemento estiver visível
+    }
+  );
 
   counters.forEach((counter) => {
     observer.observe(counter);
@@ -182,6 +202,156 @@ function initChatWidget() {
 }
 
 /**
+ * Cria o container para os toasts
+ */
+function initToastContainer() {
+  // Verifica se já existe um container de toast
+  if (!document.getElementById("toast-container")) {
+    // Cria o container de toast
+    const toastContainer = document.createElement("div");
+    toastContainer.id = "toast-container";
+    toastContainer.className = "fixed top-4 right-4 z-50 flex flex-col gap-4";
+    document.body.appendChild(toastContainer);
+
+    // Adiciona estilos para o toast no head
+    const style = document.createElement("style");
+    style.textContent = `
+      .toast {
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        transform: translateX(20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+      .toast.success {
+        background-color: #10B981;
+        border-left: 5px solid #059669;
+      }
+      .toast.error {
+        background-color: #EF4444;
+        border-left: 5px solid #B91C1C;
+      }
+      .toast.info {
+        background-color: #3B82F6;
+        border-left: 5px solid #1D4ED8;
+      }
+      .toast.active {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      .toast-icon {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+      .toast-content {
+        flex: 1;
+      }
+      .toast-close {
+        cursor: pointer;
+        margin-left: 0.75rem;
+        font-size: 1.25rem;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+      .toast-close:hover {
+        opacity: 1;
+      }
+      @media (max-width: 640px) {
+        #toast-container {
+          width: calc(100% - 2rem);
+          right: 1rem;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+/**
+ * Exibe um toast personalizado
+ * @param {string} message - Mensagem a ser exibida
+ * @param {string} type - Tipo do toast (success, error, info)
+ * @param {number} duration - Duração em ms (padrão: 3000ms)
+ */
+function showToast(message, type = "success", duration = 3000) {
+  const toastContainer = document.getElementById("toast-container");
+
+  if (!toastContainer) {
+    console.error("Container de toast não encontrado");
+    return;
+  }
+
+  // Cria o elemento toast
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+
+  // Define o ícone com base no tipo
+  let icon = "";
+  switch (type) {
+    case "success":
+      icon = '<i class="fas fa-check-circle toast-icon"></i>';
+      break;
+    case "error":
+      icon = '<i class="fas fa-exclamation-circle toast-icon"></i>';
+      break;
+    case "info":
+      icon = '<i class="fas fa-info-circle toast-icon"></i>';
+      break;
+    default:
+      icon = '<i class="fas fa-bell toast-icon"></i>';
+      break;
+  }
+
+  // Estrutura do toast
+  toast.innerHTML = `
+    ${icon}
+    <div class="toast-content">${message}</div>
+    <span class="toast-close">&times;</span>
+  `;
+
+  // Adiciona ao container
+  toastContainer.appendChild(toast);
+
+  // Ativa a animação imediatamente
+  // Usar requestAnimationFrame para garantir que a transição funcione corretamente
+  requestAnimationFrame(() => toast.classList.add("active"));
+
+  // Configura o fechamento automático
+  const closeTimeout = setTimeout(() => {
+    closeToast(toast);
+  }, duration);
+
+  // Adiciona evento de clique para fechar
+  const closeBtn = toast.querySelector(".toast-close");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      clearTimeout(closeTimeout);
+      closeToast(toast);
+    });
+  }
+}
+
+/**
+ * Fecha um toast com animação
+ * @param {HTMLElement} toast - Elemento do toast a ser fechado
+ */
+function closeToast(toast) {
+  // Remove a classe active para iniciar a animação de saída
+  toast.classList.remove("active");
+
+  // Remove o elemento após a animação terminar
+  setTimeout(() => {
+    if (toast && toast.parentNode) {
+      toast.parentNode.removeChild(toast);
+    }
+  }, 300); // Tempo correspondente à duração da transição CSS
+}
+
+/**
  * Inicializa o formulário de demonstração
  */
 function initDemoForm() {
@@ -190,9 +360,24 @@ function initDemoForm() {
   if (demoForm) {
     demoForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      alert(
-        "Obrigado! Entraremos em contato em breve para agendar sua demonstração."
+
+      // Verifica se todos os campos obrigatórios estão preenchidos
+      const name = this.querySelector("#name").value.trim();
+      const email = this.querySelector("#email").value.trim();
+
+      if (!name || !email) {
+        showToast("Por favor, preencha todos os campos obrigatórios.", "error");
+        return;
+      }
+
+      // Exibe toast de sucesso
+      showToast(
+        "Obrigado! Entraremos em contato em breve para agendar sua consultoria.",
+        "success",
+        5000
       );
+
+      // Reseta o formulário
       this.reset();
     });
   }
