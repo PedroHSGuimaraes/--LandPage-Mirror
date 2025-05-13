@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mirror Studio AI - Automação Inteligente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#121212',
+              darker: '#0a0a0a',
+              light: '#f4f4f4',
+              accent: '#ff5757',
+              'accent-dark': '#e04444',
+              'accent-light': '#ff7a7a',
+              gray: '#2a2a2a',
+              'gray-light': '#3a3a3a'
+            },
+            primary: {
+              500: '#ff5757',
+              600: '#e04444',
+              400: '#ff7a7a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif']
+          },
+          boxShadow: {
+            'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            'glow': '0 0 15px rgba(255, 87, 87, 0.5)',
+            'glow-lg': '0 0 30px rgba(255, 87, 87, 0.4)'
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+            'spin-slow': 'spin 8s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    @keyframes floatSlow {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-25px) rotate(5deg);
+      }
+
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-float-delay-1 {
+      animation: float 6s ease-in-out 1s infinite;
+    }
+
+    .animate-float-delay-2 {
+      animation: float 6s ease-in-out 2s infinite;
+    }
+
+    .animate-float-slow {
+      animation: floatSlow 10s ease-in-out infinite;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #ff5757, #ff8f57);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .gradient-text-purple {
+      background: linear-gradient(90deg, #ff5757, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, rgba(255, 87, 87, 0.15) 0%, rgba(255, 143, 87, 0.15) 100%);
+    }
+
+    .animated-gradient-bg {
+      background: linear-gradient(270deg, #ff5757, #ff8f57, #a855f7);
+      background-size: 600% 600%;
+      animation: gradientBG 8s ease infinite;
+    }
+
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 30px -5px rgba(255, 87, 87, 0.2);
+    }
+
+    .glow {
+      box-shadow: 0 0 15px rgba(255, 87, 87, 0.5);
+    }
+
+    .glow-lg {
+      box-shadow: 0 0 30px rgba(255, 87, 87, 0.4);
+    }
+
+    #n8n-chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #ff5757, #ff8f57);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 87, 87, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    #n8n-chat-button:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 4px 25px rgba(255, 87, 87, 0.6);
+    }
+
+    #n8n-chat-iframe {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 380px;
+      height: 520px;
+      border: 1px solid #444;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      display: none;
+      z-index: 999;
+      background-color: #121212;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .shadow-glow {
+      box-shadow: 0 0 15px rgba(255, 87, 87, 0.5);
+    }
+
+    .feature-icon {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover .feature-icon {
+      transform: scale(1.2);
+      color: #ff5757;
+    }
+
+    .step-connector {
+      position: absolute;
+      height: 100%;
+      width: 2px;
+      background: linear-gradient(to bottom, #ff5757 0%, rgba(255, 87, 87, 0.3) 100%);
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #2a2a2a;
+      border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #ff5757;
+      border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #e04444;
+    }
+
+    .text-stroke {
+      -webkit-text-stroke: 1px rgba(255, 87, 87, 0.3);
+    }
+
+    .text-shadow {
+      text-shadow: 0 2px 10px rgba(255, 87, 87, 0.3);
+    }
+
+    .clip-path-slant {
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    }
+
+    .clip-path-wave {
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 75% 90%, 50% 85%, 25% 90%, 0 85%);
+    }
+
+    .perspective {
+      perspective: 1000px;
+    }
+
+    .rotate-y {
+      transform: rotateY(10deg);
+      transition: transform 0.5s ease;
+    }
+
+    .rotate-y:hover {
+      transform: rotateY(0);
+    }
+
+    .backdrop-blur {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .glass-effect {
+      background: rgba(42, 42, 42, 0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(to right, #ff5757, #ff8f57);
+      z-index: 9999;
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 100;
+      transition: all 0.3s ease;
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    .sticky-header.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background: #121212;
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      padding: 2rem;
+      box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .counter-animation {
+      transition: all 0.8s ease;
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 87, 87, 0.1) 0%, rgba(255, 87, 87, 0) 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .cursor-glow {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 87, 87, 0.5);
+      position: fixed;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      mix-blend-mode: screen;
+      transition: width 0.2s, height 0.2s;
+    }
+
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff5757;
+      position: fixed;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: transform 0.1s;
+    }
+
+    .parallax {
+      transition: transform 0.1s ease-out;
+    }
+
+    .typing-animation::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+      width: auto;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .tilt {
+      transform-style: preserve-3d;
+      transform: perspective(1000px);
+    }
+
+    .tilt-child {
+      transform: translateZ(30px);
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    .hero-shape {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .hero-shape svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: 70px;
+    }
+
+    .hero-shape .shape-fill {
+      fill: #0a0a0a;
+    }
+  </style>
+</head>
+
+<body class="bg-brand-dark text-brand-light font-sans custom-scrollbar">
+  <!-- Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- Cursor Effects -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- Background blobs -->
+  <div class="blob w-96 h-96 bg-brand-accent/20 top-0 left-0 -translate-x-1/2 -translate-y-1/2 animate-pulse-slow"></div>
+  <div class="blob w-96 h-96 bg-purple-500/20 bottom-0 right-0 translate-x-1/3 translate-y-1/3 animate-pulse-slow"></div>
+  <div class="blob w-64 h-64 bg-blue-500/20 top-1/2 right-1/4 animate-pulse-slow"></div>
+
+  <!-- Mobile Menu -->
+  <div class="overlay" id="overlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="flex justify-between items-center mb-8">
+      <div class="flex items-center space-x-2">
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ff5757"></path>
+          <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#ff5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span class="text-xl font-bold font-display">Mirror Studio AI</span>
+      </div>
+      <button class="text-2xl" id="closeMenuButton">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="flex flex-col space-y-6">
+      <a href="#features" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Recursos</a>
+      <a href="#solutions" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Soluções</a>
+      <a href="#how-it-works" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Como Funciona</a>
+      <a href="#testimonials" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Depoimentos</a>
+      <a href="#pricing" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Preços</a>
+      <a href="#contact" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Contato</a>
+    </div>
+    <div class="mt-8">
+      <a href="#demo" class="block w-full px-6 py-3 rounded-full bg-brand-accent text-white hover:bg-brand-accent-dark transition-all text-center">
+        Demonstração
+      </a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-10 border-b border-brand-gray/30">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ff5757">
+            <animate attributeName="fill" values="#ff5757;#ff8f57;#a855f7;#ff5757" dur="8s" repeatCount="indefinite"></animate>
+          </path>
+          <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#ff5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <animate attributeName="stroke" values="#ff5757;#ff8f57;#a855f7;#ff5757" dur="8s" repeatCount="indefinite"></animate>
+          </path>
+        </svg>
+        <span class="text-xl font-bold font-display">Mirror Studio AI</span>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#features" class="text-brand-light hover:text-brand-accent transition-colors">Recursos</a>
+        <a href="#solutions" class="text-brand-light hover:text-brand-accent transition-colors">Soluções</a>
+        <a href="#how-it-works" class="text-brand-light hover:text-brand-accent transition-colors">Como Funciona</a>
+        <a href="#testimonials" class="text-brand-light hover:text-brand-accent transition-colors">Depoimentos</a>
+        <a href="#pricing" class="text-brand-light hover:text-brand-accent transition-colors">Preços</a>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <a href="#contact" class="hidden md:block px-6 py-2 rounded-full bg-transparent border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white transition-all">Contato</a>
+        <a href="#demo" class="px-6 py-2 rounded-full bg-brand-accent text-white hover:bg-brand-accent-dark transition-all">Demonstração</a>
+        <button class="md:hidden text-2xl" id="mobileMenuTrigger">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative z-10 py-20 md:py-32 overflow-hidden">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-12 md:mb-0">
+          <div class="inline-block px-4 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent mb-6">
+            <div class="flex items-center">
+              <span class="flex h-2 w-2 relative mr-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
+              </span>
+              <span>Tecnologia de ponta em automação</span>
+            </div>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold font-display leading-tight mb-6 text-shadow">
+            Automação Inteligente para seu <span class="gradient-text">Negócio</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-lg">
+            Transforme sua empresa com soluções de automação impulsionadas por inteligência artificial. Economize tempo, reduza custos e aumente a produtividade.
+          </p>
+          <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="#demo" class="px-8 py-3 rounded-full bg-brand-accent text-white font-medium hover:bg-brand-accent-dark transition-all text-center glow relative overflow-hidden group">
+              <span class="relative z-10">Começar agora</span>
+              <span class="absolute top-0 left-0 w-full h-full bg-white/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+            </a>
+            <a href="#learn-more" class="px-8 py-3 rounded-full bg-transparent border border-brand-gray-light text-brand-light font-medium hover:border-brand-accent hover:text-brand-accent transition-all text-center group">
+              <span>Saiba mais</span>
+              <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+            </a>
+          </div>
+          <div class="mt-10 flex items-center space-x-2">
+            <div class="flex -space-x-2">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ff5757'/%3E%3Ctext x='20' y='25' font-family='Arial' font-size='16' fill='white' text-anchor='middle'%3E👤%3C/text%3E%3C/svg%3E" class="w-10 h-10 rounded-full border-2 border-brand-dark" alt="User">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ff8f57'/%3E%3Ctext x='20' y='25' font-family='Arial' font-size='16' fill='white' text-anchor='middle'%3E👤%3C/text%3E%3C/svg%3E" class="w-10 h-10 rounded-full border-2 border-brand-dark" alt="User">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23a855f7'/%3E%3Ctext x='20' y='25' font-family='Arial' font-size='16' fill='white' text-anchor='middle'%3E👤%3C/text%3E%3C/svg%3E" class="w-10 h-10 rounded-full border-2 border-brand-dark" alt="User">
+            </div>
+            <div class="text-sm">
+              <p class="text-gray-300">Mais de <span class="text-brand-accent font-bold counter" data-target="500">0</span>+ empresas confiam em nós</p>
+              <div class="flex items-center mt-1">
+                <div class="flex">
+                  <i class="fas fa-star text-yellow-400"></i>
+                  <i class="fas fa-star text-yellow-400"></i>
+                  <i class="fas fa-star text-yellow-400"></i>
+                  <i class="fas fa-star text-yellow-400"></i>
+                  <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <span class="ml-2 text-gray-400">4.9/5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="md:w-1/2 relative perspective">
+          <div class="relative z-10 bg-brand-gray rounded-2xl p-2 shadow-xl rotate-y">
+            <div class="bg-brand-darker rounded-xl overflow-hidden">
+              <svg class="w-full" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#ff5757;stop-opacity:1"></stop>
+                    <stop offset="100%" style="stop-color:#ff8f57;stop-opacity:1"></stop>
+                  </linearGradient>
+                  <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#ff8f57;stop-opacity:1"></stop>
+                    <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1"></stop>
+                  </linearGradient>
+                  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="10" result="blur"></feGaussianBlur>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+                  </filter>
+                </defs>
+                <rect width="500" height="300" fill="#1a1a1a"></rect>
+                <circle cx="250" cy="150" r="80" fill="url(#grad1)" opacity="0.2"></circle>
+                <path d="M150,100 Q250,50 350,100 T550,100" stroke="url(#grad1)" stroke-width="2" fill="none">
+                  <animate attributeName="d" values="M150,100 Q250,50 350,100 T550,100;
+                              M150,110 Q250,70 350,110 T550,110;
+                              M150,100 Q250,50 350,100 T550,100" dur="10s" repeatCount="indefinite"></animate>
+                </path>
+                <path d="M150,150 Q250,100 350,150 T550,150" stroke="url(#grad2)" stroke-width="2" fill="none">
+                  <animate attributeName="d" values="M150,150 Q250,100 350,150 T550,150;
+                              M150,140 Q250,90 350,140 T550,140;
+                              M150,150 Q250,100 350,150 T550,150" dur="8s" repeatCount="indefinite"></animate>
+                </path>
+                <path d="M150,200 Q250,150 350,200 T550,200" stroke="#a855f7" stroke-width="2" fill="none">
+                  <animate attributeName="d" values="M150,200 Q250,150 350,200 T550,200;
+                              M150,190 Q250,140 350,190 T550,190;
+                              M150,200 Q250,150 350,200 T550,200" dur="12s" repeatCount="indefinite"></animate>
+                </path>
+                <circle cx="200" cy="120" r="15" fill="#ff5757" class="animate-float" filter="url(#glow)"></circle>
+                <circle cx="300" cy="180" r="10" fill="#ff8f57" class="animate-float-delay-1" filter="url(#glow)"></circle>
+                <circle cx="250" cy="150" r="20" fill="#a855f7" class="animate-float-delay-2" filter="url(#glow)"></circle>
+                <rect x="150" y="230" width="200" height="30" rx="5" fill="#2a2a2a"></rect>
+                <rect x="150" y="230" width="120" height="30" rx="5" fill="url(#grad1)">
+                  <animate attributeName="width" values="0;120;120" dur="2s" begin="0.5s" fill="freeze"></animate>
+                </rect>
+                <text x="250" y="250" font-family="Arial" font-size="12" fill="white" text-anchor="middle" opacity="0">
+                  <animate attributeName="opacity" values="0;1" dur="1s" begin="2.5s" fill="freeze"></animate>
+                  Processando...
+                </text>
+              </svg>
+            </div>
+          </div>
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 blur-3xl bg-brand-accent/20 rounded-full animate-pulse-slow"></div>
+
+          <!-- Floating Elements -->
+          <div class="absolute -top-10 -right-10 w-24 h-24 bg-brand-gray rounded-lg p-2 rotate-12 animate-float-slow shadow-lg">
+            <div class="bg-brand-darker rounded-lg h-full w-full flex items-center justify-center">
+              <i class="fas fa-robot text-2xl text-brand-accent"></i>
+            </div>
+          </div>
+          <div class="absolute -bottom-5 -left-5 w-20 h-20 bg-brand-gray rounded-full p-2 animate-float shadow-lg">
+            <div class="bg-brand-darker rounded-full h-full w-full flex items-center justify-center">
+              <i class="fas fa-cog text-xl text-brand-accent animate-spin-slow"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Wave Shape -->
+    <div class="hero-shape">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Stats Section (New) -->
+  <section class="relative z-10 py-12 bg-brand-darker">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="stat-card bg-brand-gray/30 rounded-xl p-6 text-center">
+          <div class="text-4xl font-bold mb-2 gradient-text counter" data-target="95">0</div>
+          <p class="text-gray-300">% de Redução em Tarefas Manuais</p>
+        </div>
+        <div class="stat-card bg-brand-gray/30 rounded-xl p-6 text-center">
+          <div class="text-4xl font-bold mb-2 gradient-text counter" data-target="200">0</div>
+          <p class="text-gray-300">+ Integrações Disponíveis</p>
+        </div>
+        <div class="stat-card bg-brand-gray/30 rounded-xl p-6 text-center">
+          <div class="text-4xl font-bold mb-2 gradient-text counter" data-target="60">0</div>
+          <p class="text-gray-300">% de Aumento em Produtividade</p>
+        </div>
+        <div class="stat-card bg-brand-gray/30 rounded-xl p-6 text-center">
+          <div class="text-4xl font-bold mb-2 gradient-text counter" data-target="10000">0</div>
+          <p class="text-gray-300">+ Automações Criadas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logos Section -->
+  <section class="relative z-10 py-12 border-t border-b border-brand-gray/30">
+    <div class="container mx-auto px-6">
+      <p class="text-center text-gray-400 mb-8">Empresas que confiam em nossas soluções</p>
+      <div class="marquee">
+        <div class="marquee-content">
+          <div class="flex items-center space-x-16">
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 1</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 2</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 3</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 4</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 5</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 6</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 1</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 2</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 3</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 4</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 5</text>
+              </svg>
+            </div>
+            <div class="grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+              <svg class="h-8" viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="30" fill="none"></rect>
+                <text x="10" y="20" font-family="Arial" font-size="16" fill="#f4f4f4">Empresa 6</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="relative z-10 py-20">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="inline-block px-4 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent mb-4">RECURSOS</span>
+        <h2 class="text-3xl md:text-4xl font-bold font-display mt-2 mb-4">Soluções de automação inteligente para cada necessidade</h2>
+        <p class="text-gray-300">Nossa plataforma oferece ferramentas poderosas para automatizar processos e impulsionar a eficiência do seu negócio.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-gradient-to-br from-brand-gray to-brand-gray/50 rounded-2xl p-8 card-hover border border-brand-gray-light/30 group">
+          <div class="w-16 h-16 rounded-2xl bg-brand-accent/20 flex items-center justify-center mb-6 group-hover:bg-brand-accent/30 transition-all">
+            <i class="fas fa-robot text-3xl text-brand-accent feature-icon"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-accent transition-colors">Automação de Processos</h3>
+          <p class="text-gray-300 mb-6">Automatize tarefas repetitivas e fluxos de trabalho complexos com nossa tecnologia intuitiva de arrastar e soltar.</p>
+          <a href="#" class="text-brand-accent flex items-center group-hover:font-medium transition-all">
+            Saiba mais <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-gradient-to-br from-brand-gray to-brand-gray/50 rounded-2xl p-8 card-hover border border-brand-gray-light/30 group">
+          <div class="w-16 h-16 rounded-2xl bg-brand-accent/20 flex items-center justify-center mb-6 group-hover:bg-brand-accent/30 transition-all">
+            <i class="fas fa-brain text-3xl text-brand-accent feature-icon"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-accent transition-colors">IA Avançada</h3>
+          <p class="text-gray-300 mb-6">Utilize algoritmos de inteligência artificial para análise de dados, previsões e tomada de decisões inteligentes.</p>
+          <a href="#" class="text-brand-accent flex items-center group-hover:font-medium transition-all">
+            Saiba mais <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-gradient-to-br from-brand-gray to-brand-gray/50 rounded-2xl p-8 card-hover border border-brand-gray-light/30 group">
+          <div class="w-16 h-16 rounded-2xl bg-brand-accent/20 flex items-center justify-center mb-6 group-hover:bg-brand-accent/30 transition-all">
+            <i class="fas fa-plug text-3xl text-brand-accent feature-icon"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-accent transition-colors">Integrações Ilimitadas</h3>
+          <p class="text-gray-300 mb-6">Conecte-se a mais de 200 aplicativos e serviços para criar fluxos de trabalho personalizados e eficientes.</p>
+          <a href="#" class="text-brand-accent flex items-center group-hover:font-medium transition-all">
+            Saiba mais <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="bg-gradient-to-br from-brand-gray to-brand-gray/50 rounded-2xl p-8 card-hover border border-brand-gray-light/30 group">
+          <div class="w-16 h-16 rounded-2xl bg-brand-accent/20 flex items-center justify-center mb-6 group-hover:bg-brand-accent/30 transition-all">
+            <i class="fas fa-chart-line text-3xl text-brand-accent feature-icon"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-accent transition-colors">Análise de Dados</h3>
+          <p class="text-gray-300 mb-6">Visualize e analise dados em tempo real com painéis personalizáveis e relatórios detalhados.</p>
+          <a href="#" class="text-brand-accent flex items-center group-hover:font-medium transition-all">
+            Saiba mais <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="bg-gradient-to-br from-brand-gray to-brand-gray/50 rounded-2xl p-8 card-hover border border-brand-gray-light/30 group">
+          <div class="w-16 h-16 rounded-2xl bg-brand-accent/20 flex items-center justify-center mb-6 group-hover:bg-brand-accent/30 transition-all">
+            <i class="fas fa-shield-alt text-3xl text-brand-accent feature-icon"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-accent transition-colors">Segurança Avançada</h3>
+          <p class="text-gray-300 mb-6">Proteja seus dados com criptografia de ponta a ponta, autenticação de dois fatores e conformidade com LGPD.</p>
+          <a href="#" class="text-brand-accent flex items-center group-hover:font-medium transition-all">
+            Saiba mais <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="bg-gradient-to-br from-brand-gray to-brand-gray/50 rounded-2xl p-8 card-hover border border-brand-gray-light/30 group">
+          <div class="w-16 h-16 rounded-2xl bg-brand-accent/20 flex items-center justify-center mb-6 group-hover:bg-brand-accent/30 transition-all">
+            <i class="fas fa-mobile-alt text-3xl text-brand-accent feature-icon"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-accent transition-colors">Acesso Mobile</h3>
+          <p class="text-gray-300 mb-6">Gerencie suas automações de qualquer lugar com nosso aplicativo móvel intuitivo e responsivo.</p>
+          <a href="#" class="text-brand-accent flex items-center group-hover:font-medium transition-all">
+            Saiba mais <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Feature Highlight (New) -->
+      <div class="mt-20 bg-gradient-to-br from-brand-gray/50 to-brand-gray/20 rounded-3xl p-8 md:p-12 border border-brand-gray-light/30 overflow-hidden relative">
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-32 -left-32 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+          <div>
+            <span class="inline-block px-4 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent mb-4">DESTAQUE</span>
+            <h3 class="text-3xl font-bold mb-6">Automação com Inteligência Artificial</h3>
+            <p class="text-gray-300 mb-6">Nossa plataforma combina automação de processos com inteligência artificial avançada para criar soluções que não apenas executam tarefas, mas aprendem e se adaptam ao seu negócio.</p>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-start">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center mt-1">
+                  <i class="fas fa-check text-sm text-brand-accent"></i>
+                </div>
+                <span class="ml-3">Processamento de linguagem natural para entender documentos</span>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center mt-1">
+                  <i class="fas fa-check text-sm text-brand-accent"></i>
+                </div>
+                <span class="ml-3">Algoritmos de aprendizado de máquina para otimização contínua</span>
+              </li>
+              <li class="flex items-start">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center mt-1">
+                  <i class="fas fa-check text-sm text-brand-accent"></i>
+                </div>
+                <span class="ml-3">Análise preditiva para antecipar necessidades e problemas</span>
+              </li>
+            </ul>
+            <a href="#" class="inline-block px-8 py-3 rounded-full bg-brand-accent text-white font-medium hover:bg-brand-accent-dark transition-all relative overflow-hidden group">
+              <span class="relative z-10">Conheça nossa IA</span>
+              <span class="absolute top-0 left-0 w-full h-full bg-white/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+            </a>
+          </div>
+          <div class="relative">
+            <div class="bg-brand-gray rounded-2xl p-3 shadow-xl perspective">
+              <div class="bg-brand-darker rounded-xl overflow-hidden">
+                <svg class="w-full" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" style="stop-color:#ff5757;stop-opacity:1"></stop>
+                      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1"></stop>
+                    </linearGradient>
+                    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="5" result="blur"></feGaussianBlur>
+                      <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+                    </filter>
+                  </defs>
+                  <rect width="500" height="300" fill="#1a1a1a"></rect>
+                  <circle cx="250" cy="150" r="100" fill="url(#grad3)" opacity="0.1"></circle>
+
+                  <!-- Brain Network -->
+                  <circle cx="200" cy="100" r="8" fill="#ff5757" filter="url(#glow2)"></circle>
+                  <circle cx="300" cy="120" r="8" fill="#ff8f57" filter="url(#glow2)"></circle>
+                  <circle cx="250" cy="180" r="8" fill="#a855f7" filter="url(#glow2)"></circle>
+                  <circle cx="180" cy="150" r="8" fill="#ff5757" filter="url(#glow2)"></circle>
+                  <circle cx="320" cy="170" r="8" fill="#ff8f57" filter="url(#glow2)"></circle>
+                  <circle cx="220" cy="220" r="8" fill="#a855f7" filter="url(#glow2)"></circle>
+                  <circle cx="280" cy="80" r="8" fill="#ff5757" filter="url(#glow2)"></circle>
+
+                  <line x1="200" y1="100" x2="300" y2="120" stroke="#ff5757" stroke-width="1" opacity="0.6"></line>
+                  <line x1="300" y1="120" x2="250" y2="180" stroke="#ff8f57" stroke-width="1" opacity="0.6"></line>
+                  <line x1="250" y1="180" x2="180" y2="150" stroke="#a855f7" stroke-width="1" opacity="0.6"></line>
+                  <line x1="180" y1="150" x2="200" y2="100" stroke="#ff5757" stroke-width="1" opacity="0.6"></line>
+                  <line x1="300" y1="120" x2="320" y2="170" stroke="#ff8f57" stroke-width="1" opacity="0.6"></line>
+                  <line x1="320" y1="170" x2="250" y2="180" stroke="#a855f7" stroke-width="1" opacity="0.6"></line>
+                  <line x1="250" y1="180" x2="220" y2="220" stroke="#ff5757" stroke-width="1" opacity="0.6"></line>
+                  <line x1="280" y1="80" x2="300" y2="120" stroke="#ff8f57" stroke-width="1" opacity="0.6"></line>
+                  <line x1="280" y1="80" x2="200" y2="100" stroke="#a855f7" stroke-width="1" opacity="0.6"></line>
+
+                  <!-- Pulse Animation -->
+                  <circle cx="250" cy="150" r="40" fill="none" stroke="url(#grad3)" stroke-width="2" opacity="0">
+                    <animate attributeName="r" values="40;80" dur="3s" repeatCount="indefinite"></animate>
+                    <animate attributeName="opacity" values="0.6;0" dur="3s" repeatCount="indefinite"></animate>
+                  </circle>
+
+                  <!-- Data Flow Animation -->
+                  <circle cx="200" cy="100" r="3" fill="#ffffff" opacity="0">
+                    <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0s" repeatCount="indefinite"></animate>
+                    <animateMotion path="M0,0 L100,20 L50,80 L-20,50 L0,0" dur="2s" begin="0s" repeatCount="indefinite"></animateMotion>
+                  </circle>
+
+                  <circle cx="300" cy="120" r="3" fill="#ffffff" opacity="0">
+                    <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.5s" repeatCount="indefinite"></animate>
+                    <animateMotion path="M0,0 L-50,60 L20,50 L40,-40 L0,0" dur="2s" begin="0.5s" repeatCount="indefinite"></animateMotion>
+                  </circle>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Floating Elements -->
+            <div class="absolute -top-6 -right-6 w-16 h-16 bg-brand-gray rounded-lg p-2 rotate-12 animate-float-slow shadow-lg">
+              <div class="bg-brand-darker rounded-lg h-full w-full flex items-center justify-center">
+                <i class="fas fa-brain text-xl text-brand-accent"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section (New Section with Alternating Layout) -->
+  <section id="how-it-works" class="relative z-10 py-20 bg-gradient-to-b from-brand-dark to-brand-darker">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-brand-accent font-medium">COMO FUNCIONA</span>
+        <h2 class="text-3xl md:text-4xl font-bold font-display mt-2 mb-4">Comece a usar o Mirror Studio AI em 3 passos</h2>
+        <p class="text-gray-300">Nossa plataforma foi projetada para ser intuitiva e fácil de usar, mesmo para quem não tem conhecimentos técnicos.</p>
+      </div>
+
+      <div class="space-y-16 md:space-y-24 relative">
+        <!-- Step 1 -->
+        <div class="md:grid md:grid-cols-2 gap-8 items-center">
+          <div class="md:text-right">
+            <div class="relative">
+              <div class="hidden md:block absolute -right-12 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary-500 shadow-glow z-10"></div>
+              <span class="inline-block bg-primary-500 text-white text-xl font-bold w-12 h-12 rounded-full flex items-center justify-center mb-4 md:ml-auto">1</span>
+              <h3 class="text-2xl font-bold text-primary-600 mb-4">Crie sua Conta</h3>
+              <p class="text-gray-300 mb-6 md:mb-0">Registre-se na plataforma Mirror Studio AI para começar a explorar todas as possibilidades de automação para o seu negócio.</p>
+            </div>
+          </div>
+          <div class="bg-brand-gray rounded-xl shadow-card hover:shadow-card-hover transition-all transform md:hover:-translate-y-2 p-3 group">
+            <div class="overflow-hidden rounded-lg">
+              <svg class="w-full h-64 object-contain rounded group-hover:scale-105 transition-transform duration-300" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="250" fill="#1a1a1a" rx="8" ry="8"></rect>
+                <rect x="50" y="40" width="300" height="50" rx="6" ry="6" fill="#2a2a2a"></rect>
+                <rect x="60" y="55" width="180" height="20" fill="#3a3a3a"></rect>
+                <rect x="50" y="110" width="300" height="50" rx="6" ry="6" fill="#2a2a2a"></rect>
+                <rect x="60" y="125" width="180" height="20" fill="#3a3a3a"></rect>
+                <rect x="50" y="180" width="140" height="40" rx="20" ry="20" fill="#ff5757"></rect>
+                <text x="120" y="205" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Criar Conta</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="md:grid md:grid-cols-2 gap-8 items-center">
+          <div class="md:order-2 md:text-left">
+            <div class="relative">
+              <div class="hidden md:block absolute -left-12 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary-500 shadow-glow z-10"></div>
+              <span class="inline-block bg-primary-500 text-white text-xl font-bold w-12 h-12 rounded-full flex items-center justify-center mb-4 md:mr-auto">2</span>
+              <h3 class="text-2xl font-bold text-primary-600 mb-4">Configure sua Automação</h3>
+              <p class="text-gray-300 mb-6 md:mb-0">Use nossa interface intuitiva de arrastar e soltar para criar fluxos de trabalho personalizados sem precisar escrever uma linha de código.</p>
+            </div>
+          </div>
+          <div class="md:order-1 bg-brand-gray rounded-xl shadow-card hover:shadow-card-hover transition-all transform md:hover:-translate-y-2 p-3 group">
+            <div class="overflow-hidden rounded-lg">
+              <svg class="w-full h-64 object-contain rounded group-hover:scale-105 transition-transform duration-300" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="250" fill="#1a1a1a" rx="8" ry="8"></rect>
+                <rect x="20" y="20" width="360" height="210" rx="6" ry="6" fill="#2a2a2a"></rect>
+                <circle cx="100" cy="80" r="30" fill="#ff5757"></circle>
+                <circle cx="200" cy="80" r="30" fill="#3a3a3a"></circle>
+                <circle cx="300" cy="80" r="30" fill="#3a3a3a"></circle>
+                <rect x="80" y="130" width="240" height="80" rx="6" ry="6" fill="#3a3a3a"></rect>
+                <line x1="100" y1="110" x2="100" y2="130" stroke="#ff5757" stroke-width="2"></line>
+                <text x="100" y="85" font-family="Arial" font-size="12" fill="white" text-anchor="middle">1</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="md:grid md:grid-cols-2 gap-8 items-center">
+          <div class="md:text-right">
+            <div class="relative">
+              <div class="hidden md:block absolute -right-12 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary-500 shadow-glow z-10"></div>
+              <span class="inline-block bg-primary-500 text-white text-xl font-bold w-12 h-12 rounded-full flex items-center justify-center mb-4 md:ml-auto">3</span>
+              <h3 class="text-2xl font-bold text-primary-600 mb-4">Ative e Monitore</h3>
+              <p class="text-gray-300 mb-6 md:mb-0">Ative suas automações e acompanhe o desempenho em tempo real através de painéis intuitivos e relatórios detalhados.</p>
+            </div>
+          </div>
+          <div class="bg-brand-gray rounded-xl shadow-card hover:shadow-card-hover transition-all transform md:hover:-translate-y-2 p-3 group">
+            <div class="overflow-hidden rounded-lg">
+              <svg class="w-full h-64 object-contain rounded group-hover:scale-105 transition-transform duration-300" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="250" fill="#1a1a1a" rx="8" ry="8"></rect>
+                <rect x="20" y="20" width="360" height="210" rx="6" ry="6" fill="#2a2a2a"></rect>
+                <rect x="40" y="40" width="150" height="80" rx="4" ry="4" fill="#3a3a3a"></rect>
+                <path d="M50,100 L80,70 L110,90 L140,60 L170,80" stroke="#ff5757" stroke-width="2" fill="none"></path>
+                <rect x="210" y="40" width="150" height="80" rx="4" ry="4" fill="#3a3a3a"></rect>
+                <circle cx="260" cy="80" r="25" fill="#ff5757" opacity="0.2"></circle>
+                <circle cx="260" cy="80" r="20" fill="none" stroke="#ff5757" stroke-width="3" stroke-dasharray="60,10"></circle>
+                <rect x="40" y="140" width="320" height="70" rx="4" ry="4" fill="#3a3a3a"></rect>
+                <rect x="60" y="160" width="280" height="10" rx="5" ry="5" fill="#2a2a2a"></rect>
+                <rect x="60" y="160" width="180" height="10" rx="5" ry="5" fill="#ff5757"></rect>
+                <rect x="60" y="180" width="280" height="10" rx="5" ry="5" fill="#2a2a2a"></rect>
+                <rect x="60" y="180" width="120" height="10" rx="5" ry="5" fill="#ff5757"></rect>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="md:grid md:grid-cols-2 gap-8 items-center">
+          <div class="md:order-2 md:text-left">
+            <div class="relative">
+              <div class="hidden md:block absolute -left-12 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary-500 shadow-glow z-10"></div>
+              <span class="inline-block bg-primary-500 text-white text-xl font-bold w-12 h-12 rounded-full flex items-center justify-center mb-4 md:mr-auto">4</span>
+              <h3 class="text-2xl font-bold text-primary-600 mb-4">Otimize e Expanda</h3>
+              <p class="text-gray-300 mb-6 md:mb-0">Analise os resultados, otimize suas automações e expanda para outras áreas do seu negócio para maximizar a eficiência operacional.</p>
+            </div>
+          </div>
+          <div class="md:order-1 bg-brand-gray rounded-xl shadow-card hover:shadow-card-hover transition-all transform md:hover:-translate-y-2 p-3 group">
+            <div class="overflow-hidden rounded-lg">
+              <svg class="w-full h-64 object-contain rounded group-hover:scale-105 transition-transform duration-300" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="250" fill="#1a1a1a" rx="8" ry="8"></rect>
+                <rect x="20" y="20" width="360" height="210" rx="6" ry="6" fill="#2a2a2a"></rect>
+                <rect x="40" y="40" width="100" height="80" rx="4" ry="4" fill="#3a3a3a"></rect>
+                <path d="M50,100 L90,60 L130,90" stroke="#ff5757" stroke-width="2" fill="none"></path>
+                <rect x="150" y="40" width="100" height="80" rx="4" ry="4" fill="#3a3a3a"></rect>
+                <path d="M160,100 L200,70 L240,110" stroke="#ff8f57" stroke-width="2" fill="none"></path>
+                <rect x="260" y="40" width="100" height="80" rx="4" ry="4" fill="#3a3a3a"></rect>
+                <path d="M270,80 L310,60 L350,100" stroke="#a855f7" stroke-width="2" fill="none"></path>
+                <rect x="40" y="140" width="320" height="70" rx="4" ry="4" fill="#3a3a3a"></rect>
+                <circle cx="90" cy="175" r="20" fill="#ff5757" opacity="0.3"></circle>
+                <circle cx="90" cy="175" r="15" fill="#ff5757" opacity="0.5"></circle>
+                <circle cx="200" cy="175" r="20" fill="#ff8f57" opacity="0.3"></circle>
+                <circle cx="200" cy="175" r="15" fill="#ff8f57" opacity="0.5"></circle>
+                <circle cx="310" cy="175" r="20" fill="#a855f7" opacity="0.3"></circle>
+                <circle cx="310" cy="175" r="15" fill="#a855f7" opacity="0.5"></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-16 text-center">
+        <a href="#demo" class="px-8 py-3 rounded-full bg-brand-accent text-white font-medium hover:bg-brand-accent-dark transition-all inline-block">
+          Comece agora mesmo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions Section -->
+  <section id="solutions" class="relative z-10 py-20">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-brand-accent font-medium">SOLUÇÕES</span>
+        <h2 class="text-3xl md:text-4xl font-bold font-display mt-2 mb-4">Soluções personalizadas para cada setor</h2>
+        <p class="text-gray-300">Descubra como nossa plataforma pode ser adaptada para atender às necessidades específicas do seu setor.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Solution 1 -->
+        <div class="bg-brand-gray rounded-2xl overflow-hidden card-hover">
+          <div class="h-40 bg-gradient-to-r from-brand-accent to-purple-600 flex items-center justify-center">
+            <i class="fas fa-building text-5xl text-white"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3">Finanças</h3>
+            <p class="text-gray-300 mb-4">Automatize processos financeiros, análise de risco e conformidade regulatória para instituições financeiras.</p>
+            <a href="#" class="text-brand-accent flex items-center hover:underline">
+              Saiba mais <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Solution 2 -->
+        <div class="bg-brand-gray rounded-2xl overflow-hidden card-hover">
+          <div class="h-40 bg-gradient-to-r from-blue-500 to-brand-accent flex items-center justify-center">
+            <i class="fas fa-shopping-cart text-5xl text-white"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3">Varejo</h3>
+            <p class="text-gray-300 mb-4">Otimize o gerenciamento de estoque, personalização de marketing e experiência do cliente para varejistas.</p>
+            <a href="#" class="text-brand-accent flex items-center hover:underline">
+              Saiba mais <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Solution 3 -->
+        <div class="bg-brand-gray rounded-2xl overflow-hidden card-hover">
+          <div class="h-40 bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center">
+            <i class="fas fa-heartbeat text-5xl text-white"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3">Saúde</h3>
+            <p class="text-gray-300 mb-4">Melhore o atendimento ao paciente, otimize agendamentos e automatize processos administrativos na área da saúde.</p>
+            <a href="#" class="text-brand-accent flex items-center hover:underline">
+              Saiba mais <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Solution 4 -->
+        <div class="bg-brand-gray rounded-2xl overflow-hidden card-hover">
+          <div class="h-40 bg-gradient-to-r from-yellow-500 to-red-500 flex items-center justify-center">
+            <i class="fas fa-industry text-5xl text-white"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3">Manufatura</h3>
+            <p class="text-gray-300 mb-4">Otimize a produção, manutenção preditiva e gerenciamento da cadeia de suprimentos para fabricantes.</p>
+            <a href="#" class="text-brand-accent flex items-center hover:underline">
+              Saiba mais <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Solution 5 -->
+        <div class="bg-brand-gray rounded-2xl overflow-hidden card-hover">
+          <div class="h-40 bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center">
+            <i class="fas fa-graduation-cap text-5xl text-white"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3">Educação</h3>
+            <p class="text-gray-300 mb-4">Automatize processos administrativos, melhore a experiência de aprendizado e otimize recursos educacionais.</p>
+            <a href="#" class="text-brand-accent flex items-center hover:underline">
+              Saiba mais <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Solution 6 -->
+        <div class="bg-brand-gray rounded-2xl overflow-hidden card-hover">
+          <div class="h-40 bg-gradient-to-r from-teal-500 to-green-500 flex items-center justify-center">
+            <i class="fas fa-truck text-5xl text-white"></i>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3">Logística</h3>
+            <p class="text-gray-300 mb-4">Otimize rotas, rastreamento de entregas e gerenciamento de frota para empresas de logística e transporte.</p>
+            <a href="#" class="text-brand-accent flex items-center hover:underline">
+              Saiba mais <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="relative z-10 py-20 bg-gradient-to-b from-brand-darker to-brand-dark">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-brand-accent font-medium">DEPOIMENTOS</span>
+        <h2 class="text-3xl md:text-4xl font-bold font-display mt-2 mb-4">O que nossos clientes dizem</h2>
+        <p class="text-gray-300">Descubra como nossa plataforma tem ajudado empresas a transformar seus processos e alcançar resultados extraordinários.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="bg-brand-gray rounded-2xl p-6 card-hover">
+          <div class="flex items-center mb-4">
+            <div class="flex">
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+            </div>
+          </div>
+          <p class="text-gray-300 mb-6">"A plataforma Mirror Studio AI transformou completamente nossos processos internos. Conseguimos reduzir o tempo gasto em tarefas administrativas em 70% e nossos funcionários agora podem se concentrar em atividades estratégicas."</p>
+          <div class="flex items-center">
+            <div class="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center mr-4">
+              <span class="text-white font-bold">AM</span>
+            </div>
+            <div>
+              <h4 class="font-bold">Ana Martins</h4>
+              <p class="text-sm text-gray-400">Diretora de Operações, TechCorp</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="bg-brand-gray rounded-2xl p-6 card-hover">
+          <div class="flex items-center mb-4">
+            <div class="flex">
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+            </div>
+          </div>
+          <p class="text-gray-300 mb-6">"Implementamos a solução de automação da Mirror Studio AI há apenas 3 meses e já vimos um ROI impressionante. A facilidade de uso e o suporte excepcional tornaram a transição muito suave para nossa equipe."</p>
+          <div class="flex items-center">
+            <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4">
+              <span class="text-white font-bold">RS</span>
+            </div>
+            <div>
+              <h4 class="font-bold">Ricardo Silva</h4>
+              <p class="text-sm text-gray-400">CEO, Inovação Digital</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="bg-brand-gray rounded-2xl p-6 card-hover">
+          <div class="flex items-center mb-4">
+            <div class="flex">
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+              <i class="fas fa-star text-yellow-400"></i>
+            </div>
+          </div>
+          <p class="text-gray-300 mb-6">"A capacidade de integração com nossos sistemas existentes foi o que nos atraiu para a Mirror Studio AI. A implementação foi rápida e os resultados foram imediatos. Recomendo fortemente para qualquer empresa."</p>
+          <div class="flex items-center">
+            <div class="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center mr-4">
+              <span class="text-white font-bold">JC</span>
+            </div>
+            <div>
+              <h4 class="font-bold">Juliana Costa</h4>
+              <p class="text-sm text-gray-400">CTO, MegaRetail</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="relative z-10 py-20">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-brand-accent font-medium">PREÇOS</span>
+        <h2 class="text-3xl md:text-4xl font-bold font-display mt-2 mb-4">Planos flexíveis para empresas de todos os tamanhos</h2>
+        <p class="text-gray-300">Escolha o plano que melhor atende às necessidades da sua empresa e comece a transformar seus processos hoje mesmo.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Basic Plan -->
+        <div class="bg-brand-gray rounded-2xl p-6 card-hover">
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-bold">Básico</h3>
+            <div class="mt-4 mb-6">
+              <span class="text-4xl font-bold">R$199</span>
+              <span class="text-gray-400">/mês</span>
+            </div>
+            <p class="text-gray-300">Ideal para pequenas empresas e startups.</p>
+          </div>
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>5 automações ativas</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>100 execuções por mês</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Integrações básicas</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Suporte por e-mail</span>
+            </div>
+            <div class="flex items-center text-gray-500">
+              <i class="fas fa-times mr-3"></i>
+              <span>Recursos avançados de IA</span>
+            </div>
+          </div>
+          <a href="#" class="block text-center px-6 py-3 rounded-full border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white transition-all">
+            Começar agora
+          </a>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="bg-gradient-to-b from-brand-accent/20 to-purple-600/20 rounded-2xl p-6 card-hover relative border border-brand-accent">
+          <div class="absolute top-0 right-0 bg-brand-accent text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-medium">
+            MAIS POPULAR
+          </div>
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-bold">Profissional</h3>
+            <div class="mt-4 mb-6">
+              <span class="text-4xl font-bold">R$499</span>
+              <span class="text-gray-400">/mês</span>
+            </div>
+            <p class="text-gray-300">Perfeito para empresas em crescimento.</p>
+          </div>
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>20 automações ativas</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>1.000 execuções por mês</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Todas as integrações</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Suporte prioritário</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Recursos básicos de IA</span>
+            </div>
+          </div>
+          <a href="#" class="block text-center px-6 py-3 rounded-full bg-brand-accent text-white hover:bg-brand-accent-dark transition-all glow">
+            Começar agora
+          </a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="bg-brand-gray rounded-2xl p-6 card-hover">
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-bold">Empresarial</h3>
+            <div class="mt-4 mb-6">
+              <span class="text-4xl font-bold">R$999</span>
+              <span class="text-gray-400">/mês</span>
+            </div>
+            <p class="text-gray-300">Para grandes empresas com necessidades avançadas.</p>
+          </div>
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Automações ilimitadas</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>10.000 execuções por mês</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Integrações personalizadas</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Gerente de conta dedicado</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check text-green-500 mr-3"></i>
+              <span>Recursos avançados de IA</span>
+            </div>
+          </div>
+          <a href="#" class="block text-center px-6 py-3 rounded-full border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white transition-all">
+            Fale com vendas
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-12 text-center">
+        <p class="text-gray-300 mb-4">Precisa de um plano personalizado para sua empresa?</p>
+        <a href="#contact" class="text-brand-accent hover:underline">Entre em contato com nossa equipe de vendas</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="demo" class="relative z-10 py-20 bg-gradient-to-r from-brand-accent/20 to-purple-600/20">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="md:w-1/2 mb-8 md:mb-0">
+          <h2 class="text-3xl md:text-4xl font-bold font-display mb-4">Pronto para transformar seu negócio?</h2>
+          <p class="text-gray-300 mb-6">Agende uma demonstração gratuita e descubra como nossa plataforma pode ajudar sua empresa a economizar tempo e recursos.</p>
+          <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="#contact" class="px-8 py-3 rounded-full bg-brand-accent text-white font-medium hover:bg-brand-accent-dark transition-all text-center glow">
+              Agendar demonstração
+            </a>
+            <a href="#" class="px-8 py-3 rounded-full bg-transparent border border-brand-gray-light text-brand-light font-medium hover:border-brand-accent hover:text-brand-accent transition-all text-center">
+              Ver casos de sucesso
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2">
+          <div class="bg-brand-gray rounded-2xl p-6">
+            <h3 class="text-xl font-bold mb-4">Solicite uma demonstração</h3>
+            <form id="demo-form">
+              <div class="mb-4">
+                <label for="name" class="block text-sm font-medium mb-2">Nome</label>
+                <input type="text" id="name" class="w-full px-4 py-2 rounded-lg bg-brand-darker border border-brand-gray-light focus:outline-none focus:ring-2 focus:ring-brand-accent">
+                <div data-lastpass-icon-root="" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div>
+              </div>
+              <div class="mb-4">
+                <label for="email" class="block text-sm font-medium mb-2">E-mail</label>
+                <input type="email" id="email" class="w-full px-4 py-2 rounded-lg bg-brand-darker border border-brand-gray-light focus:outline-none focus:ring-2 focus:ring-brand-accent">
+              </div>
+              <div class="mb-4">
+                <label for="company" class="block text-sm font-medium mb-2">Empresa</label>
+                <input type="text" id="company" class="w-full px-4 py-2 rounded-lg bg-brand-darker border border-brand-gray-light focus:outline-none focus:ring-2 focus:ring-brand-accent">
+              </div>
+              <div class="mb-6">
+                <label for="message" class="block text-sm font-medium mb-2">Mensagem</label>
+                <textarea id="message" rows="3" class="w-full px-4 py-2 rounded-lg bg-brand-darker border border-brand-gray-light focus:outline-none focus:ring-2 focus:ring-brand-accent"></textarea>
+              </div>
+              <button type="submit" class="w-full px-6 py-3 rounded-full bg-brand-accent text-white font-medium hover:bg-brand-accent-dark transition-all">
+                Enviar solicitação
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="relative z-10 py-20">
+    <div class="container mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-brand-accent font-medium">FAQ</span>
+        <h2 class="text-3xl md:text-4xl font-bold font-display mt-2 mb-4">Perguntas frequentes</h2>
+        <p class="text-gray-300">Encontre respostas para as perguntas mais comuns sobre nossa plataforma.</p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-6">
+        <!-- FAQ Item 1 -->
+        <div class="bg-brand-gray rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full flex justify-between items-center p-6 text-left" onclick="toggleFAQ(this)">
+            <span class="font-bold">O que é automação de processos?</span>
+            <i class="fas fa-chevron-down text-brand-accent transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-6 pb-6">
+            <p class="text-gray-300">Automação de processos é o uso de tecnologia para executar tarefas repetitivas e fluxos de trabalho com intervenção humana mínima ou nula. Isso permite que as empresas economizem tempo, reduzam erros e liberem recursos humanos para atividades mais estratégicas e criativas.</p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 2 -->
+        <div class="bg-brand-gray rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full flex justify-between items-center p-6 text-left" onclick="toggleFAQ(this)">
+            <span class="font-bold">Preciso ter conhecimentos técnicos para usar a plataforma?</span>
+            <i class="fas fa-chevron-down text-brand-accent transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-6 pb-6">
+            <p class="text-gray-300">Não! Nossa plataforma foi projetada com uma interface intuitiva de arrastar e soltar que não requer conhecimentos de programação. Qualquer pessoa pode criar automações poderosas em minutos, independentemente do seu nível técnico.</p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 3 -->
+        <div class="bg-brand-gray rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full flex justify-between items-center p-6 text-left" onclick="toggleFAQ(this)">
+            <span class="font-bold">Quanto tempo leva para implementar a solução?</span>
+            <i class="fas fa-chevron-down text-brand-accent transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-6 pb-6">
+            <p class="text-gray-300">A maioria dos clientes consegue implementar nossas soluções em questão de dias, não semanas ou meses. Nossa equipe de suporte está disponível para ajudar durante todo o processo de implementação, garantindo uma transição suave e rápida.</p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 4 -->
+        <div class="bg-brand-gray rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full flex justify-between items-center p-6 text-left" onclick="toggleFAQ(this)">
+            <span class="font-bold">A plataforma se integra com os sistemas que já uso?</span>
+            <i class="fas fa-chevron-down text-brand-accent transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-6 pb-6">
+            <p class="text-gray-300">Sim! Nossa plataforma oferece mais de 200 integrações pré-construídas com aplicativos e serviços populares. Se você precisar de uma integração personalizada, nossa equipe pode desenvolvê-la para atender às suas necessidades específicas.</p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 5 -->
+        <div class="bg-brand-gray rounded-xl overflow-hidden">
+          <button class="faq-toggle w-full flex justify-between items-center p-6 text-left" onclick="toggleFAQ(this)">
+            <span class="font-bold">Como a segurança dos meus dados é garantida?</span>
+            <i class="fas fa-chevron-down text-brand-accent transition-transform"></i>
+          </button>
+          <div class="faq-content hidden px-6 pb-6">
+            <p class="text-gray-300">A segurança é nossa prioridade. Utilizamos criptografia de ponta a ponta, autenticação de dois fatores e seguimos as melhores práticas de segurança da indústria. Nossa plataforma está em conformidade com regulamentações como LGPD e GDPR, garantindo que seus dados estejam sempre protegidos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative z-10 bg-brand-darker pt-16 pb-8 border-t border-brand-gray">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <!-- Company Info -->
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ff5757"></path>
+              <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#ff5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="text-xl font-bold font-display">Mirror Studio AI</span>
+          </div>
+          <p class="text-gray-400 mb-6">Transformando empresas através da automação inteligente e soluções de IA avançadas.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h3 class="text-lg font-bold mb-6">Links Rápidos</h3>
+          <ul class="space-y-3">
+            <li><a href="#features" class="text-gray-400 hover:text-brand-accent transition-colors">Recursos</a></li>
+            <li><a href="#solutions" class="text-gray-400 hover:text-brand-accent transition-colors">Soluções</a></li>
+            <li><a href="#how-it-works" class="text-gray-400 hover:text-brand-accent transition-colors">Como Funciona</a></li>
+            <li><a href="#pricing" class="text-gray-400 hover:text-brand-accent transition-colors">Preços</a></li>
+            <li><a href="#testimonials" class="text-gray-400 hover:text-brand-accent transition-colors">Depoimentos</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">Blog</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h3 class="text-lg font-bold mb-6">Legal</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">Termos de Serviço</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">Política de Privacidade</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">Política de Cookies</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-brand-accent transition-colors">Conformidade LGPD</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div id="contact">
+          <h3 class="text-lg font-bold mb-6">Contato</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-map-marker-alt text-brand-accent mr-3"></i>
+              <span class="text-gray-400">Av. Paulista, 1000, São Paulo - SP</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt text-brand-accent mr-3"></i>
+              <span class="text-gray-400">(11) 9999-9999</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope text-brand-accent mr-3"></i>
+              <span class="text-gray-400">contato@mirrorstudioai.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-brand-gray-light pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 Mirror Studio AI. Todos os direitos reservados.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-brand-accent transition-colors text-sm">Termos</a>
+            <a href="#" class="text-gray-400 hover:text-brand-accent transition-colors text-sm">Privacidade</a>
+            <a href="#" class="text-gray-400 hover:text-brand-accent transition-colors text-sm">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chat Widget -->
+  <button id="n8n-chat-button" onclick="toggleChat()">
+    <i class="fas fa-comment-dots"></i>
+  </button>
+  <iframe id="n8n-chat-iframe" src="about:blank"></iframe>
+
+  <script>
+    // Toggle FAQ items
+    function toggleFAQ(element) {
+      const content = element.nextElementSibling;
+      const icon = element.querySelector('i');
+
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+      }
+    }
+
+    // Toggle chat widget
+    function toggleChat() {
+      const iframe = document.getElementById('n8n-chat-iframe');
+      if (iframe.style.display === 'none' || iframe.style.display === '') {
+        iframe.style.display = 'block';
+        iframe.src = "https://example.com/chat"; // Replace with actual chat URL
+      } else {
+        iframe.style.display = 'none';
+      }
+    }
+
+    // Demo form submission
+    document.getElementById('demo-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Obrigado! Entraremos em contato em breve para agendar sua demonstração.');
+      this.reset();
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 100,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
