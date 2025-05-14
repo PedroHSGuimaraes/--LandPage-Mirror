@@ -86,6 +86,26 @@ body {
   }
 }
 
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes messagePop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* Classes de Animação */
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -101,6 +121,16 @@ body {
 
 .animate-float-slow {
   animation: floatSlow 10s ease-in-out infinite;
+}
+
+.animate-typing {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3s steps(40, end);
+}
+
+.animate-message-pop {
+  animation: messagePop 0.3s ease-out forwards;
 }
 
 /* Elementos de Texto */
@@ -163,7 +193,233 @@ body {
   box-shadow: 0 0 15px rgba(255, 87, 87, 0.5);
 }
 
-/* Chat Widget */
+/* Smartphone Chat Design */
+.smartphone {
+  position: relative;
+  width: 320px;
+  height: 580px;
+  margin: auto;
+  border: 16px solid #333;
+  border-top-width: 48px;
+  border-bottom-width: 48px;
+  border-radius: 36px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+  background: #121212;
+  overflow: hidden;
+}
+
+.smartphone:before {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 5px;
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  border-radius: 10px;
+}
+
+.smartphone:after {
+  content: "";
+  display: block;
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  left: 50%;
+  bottom: -42px;
+  transform: translateX(-50%);
+  background: #333;
+  border-radius: 50%;
+}
+
+.smartphone-screen {
+  width: 100%;
+  height: 100%;
+  background: #1a1a1a;
+  overflow: hidden;
+  position: relative;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background: linear-gradient(90deg, #ff5757, #ff8f57);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.chat-back {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.chat-name {
+  flex: 1;
+  font-weight: bold;
+}
+
+.chat-actions {
+  display: flex;
+}
+
+.chat-action {
+  margin-left: 15px;
+  font-size: 18px;
+}
+
+.chat-messages {
+  padding: 15px;
+  height: calc(100% - 72px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ff5757 #2a2a2a;
+}
+
+/* Adicionar estilo específico da barra de rolagem para o chat */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #ff5757;
+  border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #e04444;
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+  font-size: 14px;
+  position: relative;
+  opacity: 0;
+  animation: messagePop 0.3s ease-out forwards;
+}
+
+.message-time {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 5px;
+  text-align: right;
+}
+
+.message-incoming {
+  background: #2a2a2a;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  margin-right: auto;
+  animation-delay: 0.3s;
+}
+
+.message-outgoing {
+  background: linear-gradient(90deg, #ff5757, #ff8f57);
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+  margin-left: auto;
+  color: white;
+  animation-delay: 0.1s;
+}
+
+.message-typing {
+  position: relative;
+  min-width: 40px;
+}
+
+.message-typing span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  display: inline-block;
+  margin: 0 1px;
+  opacity: 0.7;
+}
+
+.message-typing span:nth-child(1) {
+  animation: pulse 1s infinite 0.2s;
+}
+
+.message-typing span:nth-child(2) {
+  animation: pulse 1s infinite 0.4s;
+}
+
+.message-typing span:nth-child(3) {
+  animation: pulse 1s infinite 0.6s;
+}
+
+.chat-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border-top: 1px solid #333;
+  padding: 10px;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  position: relative;
+  padding: 0 5px;
+}
+
+.chat-input-field {
+  flex: 1;
+  background: #2a2a2a;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+  color: white;
+  margin-right: 15px;
+  font-size: 14px;
+  max-width: calc(100% - 65px);
+}
+
+.chat-send-button {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #ff5757, #ff8f57);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Chat Widget (adaptado) */
 #n8n-chat-button {
   position: fixed;
   bottom: 20px;
@@ -481,4 +737,102 @@ body {
 
 .hero-shape .shape-fill {
   fill: #0a0a0a;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  min-width: 300px;
+  padding: 15px;
+  border-radius: 8px;
+  background: #2a2a2a;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+}
+
+.toast.show {
+  transform: translateX(0);
+}
+
+.toast-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.toast-close {
+  padding: 0;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.toast-success .toast-icon {
+  background: rgba(46, 213, 115, 0.2);
+  color: #2ed573;
+}
+
+.toast-error .toast-icon {
+  background: rgba(255, 71, 87, 0.2);
+  color: #ff4757;
+}
+
+.toast-info .toast-icon {
+  background: rgba(30, 144, 255, 0.2);
+  color: #1e90ff;
+}
+
+.toast-warning .toast-icon {
+  background: rgba(255, 165, 2, 0.2);
+  color: #ffa502;
+}
+
+/* Progress Bar para Toast */
+.toast-progress {
+  height: 3px;
+  background: #ff5757;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 0 0 8px 8px;
+  animation: toast-progress 5s linear forwards;
+}
+
+@keyframes toast-progress {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
 }

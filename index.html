@@ -24,6 +24,9 @@
 </head>
 
 <body class="bg-brand-dark text-brand-light font-sans custom-scrollbar">
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
   <!-- Progress Bar -->
   <div class="progress-bar" id="progressBar"></div>
 
@@ -159,55 +162,69 @@
           </div>
         </div>
         <div class="md:w-1/2 relative perspective">
-          <div class="relative z-10 bg-brand-gray rounded-2xl p-2 shadow-xl rotate-y">
-            <div class="bg-brand-darker rounded-xl overflow-hidden">
-              <svg class="w-full" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#ff5757;stop-opacity:1"></stop>
-                    <stop offset="100%" style="stop-color:#ff8f57;stop-opacity:1"></stop>
-                  </linearGradient>
-                  <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#ff8f57;stop-opacity:1"></stop>
-                    <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1"></stop>
-                  </linearGradient>
-                  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="10" result="blur"></feGaussianBlur>
-                    <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
-                  </filter>
-                </defs>
-                <rect width="500" height="300" fill="#1a1a1a"></rect>
-                <circle cx="250" cy="150" r="80" fill="url(#grad1)" opacity="0.2"></circle>
-                <path d="M150,100 Q250,50 350,100 T550,100" stroke="url(#grad1)" stroke-width="2" fill="none">
-                  <animate attributeName="d" values="M150,100 Q250,50 350,100 T550,100;
-                              M150,110 Q250,70 350,110 T550,110;
-                              M150,100 Q250,50 350,100 T550,100" dur="10s" repeatCount="indefinite"></animate>
-                </path>
-                <path d="M150,150 Q250,100 350,150 T550,150" stroke="url(#grad2)" stroke-width="2" fill="none">
-                  <animate attributeName="d" values="M150,150 Q250,100 350,150 T550,150;
-                              M150,140 Q250,90 350,140 T550,140;
-                              M150,150 Q250,100 350,150 T550,150" dur="8s" repeatCount="indefinite"></animate>
-                </path>
-                <path d="M150,200 Q250,150 350,200 T550,200" stroke="#a855f7" stroke-width="2" fill="none">
-                  <animate attributeName="d" values="M150,200 Q250,150 350,200 T550,200;
-                              M150,190 Q250,140 350,190 T550,190;
-                              M150,200 Q250,150 350,200 T550,200" dur="12s" repeatCount="indefinite"></animate>
-                </path>
-                <circle cx="200" cy="120" r="15" fill="#ff5757" class="animate-float" filter="url(#glow)"></circle>
-                <circle cx="300" cy="180" r="10" fill="#ff8f57" class="animate-float-delay-1" filter="url(#glow)"></circle>
-                <circle cx="250" cy="150" r="20" fill="#a855f7" class="animate-float-delay-2" filter="url(#glow)"></circle>
-                <rect x="150" y="230" width="200" height="30" rx="5" fill="#2a2a2a"></rect>
-                <rect x="150" y="230" width="120" height="30" rx="5" fill="url(#grad1)">
-                  <animate attributeName="width" values="0;120;120" dur="2s" begin="0.5s" fill="freeze"></animate>
-                </rect>
-                <text x="250" y="250" font-family="Arial" font-size="12" fill="white" text-anchor="middle" opacity="0">
-                  <animate attributeName="opacity" values="0;1" dur="1s" begin="2.5s" fill="freeze"></animate>
-                  Processando...
-                </text>
-              </svg>
+          <div class="smartphone">
+            <div class="smartphone-screen">
+              <div class="chat-header">
+                <div class="chat-back">
+                  <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="chat-avatar">
+                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="4" width="20" height="7" rx="2" fill="#ff5757" />
+                    <rect x="2" y="13" width="20" height="7" rx="2" fill="#ff5757" fill-opacity="0.7" />
+                    <circle cx="7" cy="7.5" r="2" fill="white" />
+                    <circle cx="17" cy="16.5" r="2" fill="white" />
+                  </svg>
+                </div>
+                <div class="chat-name">Assistente Mirror AI</div>
+                <div class="chat-actions">
+                  <div class="chat-action">
+                    <i class="fas fa-phone"></i>
+                  </div>
+                  <div class="chat-action">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="chat-messages">
+                <div class="message message-incoming animate-message-pop">
+                  Olá! Sou o assistente virtual da Mirror Studio AI. Como posso ajudar sua empresa hoje?
+                  <div class="message-time">10:05</div>
+                </div>
+                <div class="message message-outgoing animate-message-pop" style="animation-delay: 1s;">
+                  Preciso automatizar o atendimento ao cliente do meu e-commerce.
+                  <div class="message-time">10:06</div>
+                </div>
+                <div class="message message-incoming animate-message-pop" style="animation-delay: 2s;">
+                  Claro! Posso ajudar com isso. Nosso sistema de automação para e-commerce pode reduzir até 80% do tempo de atendimento.
+                  <div class="message-time">10:07</div>
+                </div>
+                <div class="message message-incoming animate-message-pop" style="animation-delay: 3s;">
+                  Oferecemos integração com WhatsApp, chat no site, e-mail e redes sociais. Tudo em uma única plataforma!
+                  <div class="message-time">10:07</div>
+                </div>
+                <div class="message message-outgoing animate-message-pop" style="animation-delay: 4s;">
+                  Ótimo! E quanto custa essa solução?
+                  <div class="message-time">10:08</div>
+                </div>
+                <div class="message message-incoming animate-message-pop" style="animation-delay: 5s;">
+                  <div class="message-typing">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="chat-input">
+                <div class="chat-input-container">
+                  <input type="text" class="chat-input-field" placeholder="Digite sua mensagem...">
+                  <button class="chat-send-button">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 blur-3xl bg-brand-accent/20 rounded-full animate-pulse-slow"></div>
 
           <!-- Floating Elements -->
           <div class="absolute -top-10 -right-10 w-24 h-24 bg-brand-gray rounded-lg p-2 rotate-12 animate-float-slow shadow-lg">
@@ -394,58 +411,44 @@
 
           </div>
           <div class="relative">
-            <div class="bg-brand-gray rounded-2xl p-3 shadow-xl perspective">
-              <div class="bg-brand-darker rounded-xl overflow-hidden">
-                <svg class="w-full" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" style="stop-color:#ff5757;stop-opacity:1"></stop>
-                      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1"></stop>
-                    </linearGradient>
-                    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
-                      <feGaussianBlur stdDeviation="5" result="blur"></feGaussianBlur>
-                      <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
-                    </filter>
-                  </defs>
-                  <rect width="500" height="300" fill="#1a1a1a"></rect>
-                  <circle cx="250" cy="150" r="100" fill="url(#grad3)" opacity="0.1"></circle>
-
-                  <!-- Brain Network -->
-                  <circle cx="200" cy="100" r="8" fill="#ff5757" filter="url(#glow2)"></circle>
-                  <circle cx="300" cy="120" r="8" fill="#ff8f57" filter="url(#glow2)"></circle>
-                  <circle cx="250" cy="180" r="8" fill="#a855f7" filter="url(#glow2)"></circle>
-                  <circle cx="180" cy="150" r="8" fill="#ff5757" filter="url(#glow2)"></circle>
-                  <circle cx="320" cy="170" r="8" fill="#ff8f57" filter="url(#glow2)"></circle>
-                  <circle cx="220" cy="220" r="8" fill="#a855f7" filter="url(#glow2)"></circle>
-                  <circle cx="280" cy="80" r="8" fill="#ff5757" filter="url(#glow2)"></circle>
-
-                  <line x1="200" y1="100" x2="300" y2="120" stroke="#ff5757" stroke-width="1" opacity="0.6"></line>
-                  <line x1="300" y1="120" x2="250" y2="180" stroke="#ff8f57" stroke-width="1" opacity="0.6"></line>
-                  <line x1="250" y1="180" x2="180" y2="150" stroke="#a855f7" stroke-width="1" opacity="0.6"></line>
-                  <line x1="180" y1="150" x2="200" y2="100" stroke="#ff5757" stroke-width="1" opacity="0.6"></line>
-                  <line x1="300" y1="120" x2="320" y2="170" stroke="#ff8f57" stroke-width="1" opacity="0.6"></line>
-                  <line x1="320" y1="170" x2="250" y2="180" stroke="#a855f7" stroke-width="1" opacity="0.6"></line>
-                  <line x1="250" y1="180" x2="220" y2="220" stroke="#ff5757" stroke-width="1" opacity="0.6"></line>
-                  <line x1="280" y1="80" x2="300" y2="120" stroke="#ff8f57" stroke-width="1" opacity="0.6"></line>
-                  <line x1="280" y1="80" x2="200" y2="100" stroke="#a855f7" stroke-width="1" opacity="0.6"></line>
-
-                  <!-- Pulse Animation -->
-                  <circle cx="250" cy="150" r="40" fill="none" stroke="url(#grad3)" stroke-width="2" opacity="0">
-                    <animate attributeName="r" values="40;80" dur="3s" repeatCount="indefinite"></animate>
-                    <animate attributeName="opacity" values="0.6;0" dur="3s" repeatCount="indefinite"></animate>
-                  </circle>
-
-                  <!-- Data Flow Animation -->
-                  <circle cx="200" cy="100" r="3" fill="#ffffff" opacity="0">
-                    <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0s" repeatCount="indefinite"></animate>
-                    <animateMotion path="M0,0 L100,20 L50,80 L-20,50 L0,0" dur="2s" begin="0s" repeatCount="indefinite"></animateMotion>
-                  </circle>
-
-                  <circle cx="300" cy="120" r="3" fill="#ffffff" opacity="0">
-                    <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.5s" repeatCount="indefinite"></animate>
-                    <animateMotion path="M0,0 L-50,60 L20,50 L40,-40 L0,0" dur="2s" begin="0.5s" repeatCount="indefinite"></animateMotion>
-                  </circle>
-                </svg>
+            <div class="smartphone" style="transform: scale(0.8); margin: 0;">
+              <div class="smartphone-screen">
+                <div class="chat-header">
+                  <div class="chat-avatar">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="2" y="4" width="20" height="7" rx="2" fill="#ff5757" />
+                      <rect x="2" y="13" width="20" height="7" rx="2" fill="#ff5757" fill-opacity="0.7" />
+                      <circle cx="7" cy="7.5" r="2" fill="white" />
+                      <circle cx="17" cy="16.5" r="2" fill="white" />
+                    </svg>
+                  </div>
+                  <div class="chat-name">IA Inteligente</div>
+                </div>
+                <div class="chat-messages">
+                  <div class="message message-incoming animate-message-pop">
+                    Posso ajudar a analisar seus dados de vendas e identificar tendências.
+                    <div class="message-time">14:30</div>
+                  </div>
+                  <div class="message message-outgoing animate-message-pop" style="animation-delay: 1s;">
+                    Quais são os produtos mais vendidos este mês?
+                    <div class="message-time">14:31</div>
+                  </div>
+                  <div class="message message-incoming animate-message-pop" style="animation-delay: 2s;">
+                    <div class="message-typing">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-input">
+                  <div class="chat-input-container">
+                    <input type="text" class="chat-input-field" placeholder="Digite sua mensagem...">
+                    <button class="chat-send-button">
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -622,7 +625,7 @@
           </div>
           <div class="p-6">
             <h3 class="text-xl font-bold mb-3">Automação de Ligações</h3>
-            <p class="text-gray-300 mb-4">Implantamos sistemas inteligentes para atendimento por voz, com URA personalizada, confirmação de pedidos e acompanhamento de entregas sem intervenção humana.</p>
+            <p class="text-gray-300 mb-4">Implantamos sistemas inteligentes para atendimento por voz, com IA personalizada, confirmação de pedidos e acompanhamento de entregas sem intervenção humana.</p>
           </div>
         </div>
 

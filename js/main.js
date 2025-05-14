@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initSmoothScrolling();
   initToastContainer(); // Inicializa o container para os toasts
   checkFormSubmission(); // Verifica se o formulário foi enviado
+  initChatInterface(); // Inicializa a interface de chat do smartphone
 });
 
 /**
@@ -273,83 +274,81 @@ function initToastContainer() {
 }
 
 /**
- * Exibe um toast personalizado
- * @param {string} message - Mensagem a ser exibida
- * @param {string} type - Tipo do toast (success, error, info)
- * @param {number} duration - Duração em ms (padrão: 3000ms)
+ * Exibe um toast na tela
  */
-function showToast(message, type = "success", duration = 3000) {
+function showToast(message, type = "success", duration = 5000, title = "") {
   const toastContainer = document.getElementById("toast-container");
 
-  if (!toastContainer) {
-    console.error("Container de toast não encontrado");
-    return;
-  }
+  if (!toastContainer) return;
 
-  // Cria o elemento toast
+  // Criar o elemento toast
   const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
+  toast.className = `toast toast-${type}`;
 
-  // Define o ícone com base no tipo
+  // Definir ícones com base no tipo
   let icon = "";
   switch (type) {
     case "success":
-      icon = '<i class="fas fa-check-circle toast-icon"></i>';
+      icon = '<i class="fas fa-check-circle"></i>';
+      if (!title) title = "Sucesso!";
       break;
     case "error":
-      icon = '<i class="fas fa-exclamation-circle toast-icon"></i>';
+      icon = '<i class="fas fa-exclamation-circle"></i>';
+      if (!title) title = "Erro!";
       break;
     case "info":
-      icon = '<i class="fas fa-info-circle toast-icon"></i>';
+      icon = '<i class="fas fa-info-circle"></i>';
+      if (!title) title = "Informação";
       break;
-    default:
-      icon = '<i class="fas fa-bell toast-icon"></i>';
+    case "warning":
+      icon = '<i class="fas fa-exclamation-triangle"></i>';
+      if (!title) title = "Atenção!";
       break;
   }
 
   // Estrutura do toast
   toast.innerHTML = `
-    ${icon}
-    <div class="toast-content">${message}</div>
-    <span class="toast-close">&times;</span>
+    <div class="toast-icon">${icon}</div>
+    <div class="toast-content">
+      <div class="toast-title">${title}</div>
+      <div>${message}</div>
+    </div>
+    <button class="toast-close">&times;</button>
+    <div class="toast-progress"></div>
   `;
 
-  // Adiciona ao container
+  // Adicionar ao container
   toastContainer.appendChild(toast);
 
-  // Ativa a animação imediatamente
-  // Usar requestAnimationFrame para garantir que a transição funcione corretamente
-  requestAnimationFrame(() => toast.classList.add("active"));
+  // Animate-in
+  setTimeout(() => {
+    toast.classList.add("show");
+  }, 10);
 
-  // Configura o fechamento automático
-  const closeTimeout = setTimeout(() => {
+  // Configurar evento de fechamento
+  const closeButton = toast.querySelector(".toast-close");
+  closeButton.addEventListener("click", () => {
     closeToast(toast);
-  }, duration);
+  });
 
-  // Adiciona evento de clique para fechar
-  const closeBtn = toast.querySelector(".toast-close");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      clearTimeout(closeTimeout);
+  // Auto-hide after duration
+  if (duration > 0) {
+    setTimeout(() => {
       closeToast(toast);
-    });
+    }, duration);
   }
+
+  return toast;
 }
 
 /**
- * Fecha um toast com animação
- * @param {HTMLElement} toast - Elemento do toast a ser fechado
+ * Fecha um toast
  */
 function closeToast(toast) {
-  // Remove a classe active para iniciar a animação de saída
-  toast.classList.remove("active");
-
-  // Remove o elemento após a animação terminar
+  toast.classList.remove("show");
   setTimeout(() => {
-    if (toast && toast.parentNode) {
-      toast.parentNode.removeChild(toast);
-    }
-  }, 300); // Tempo correspondente à duração da transição CSS
+    toast.remove();
+  }, 300);
 }
 
 /**
@@ -453,4 +452,112 @@ function initSmoothScrolling() {
       }
     });
   });
+}
+
+/**
+ * Inicializa a interface de chat do smartphone
+ */
+function initChatInterface() {
+  const messageInput = document.querySelector(".chat-input-field");
+  const sendButton = document.querySelector(".chat-send-button");
+
+  if (!messageInput || !sendButton) return;
+
+  // Enviar mensagem ao pressionar Enter
+  messageInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      sendChatMessage();
+    }
+  });
+
+  // Enviar mensagem ao clicar no botão de envio
+  sendButton.addEventListener("click", sendChatMessage);
+
+  function sendChatMessage() {
+    const text = messageInput.value.trim();
+    if (!text) return;
+
+    const chatMessages = document.querySelector(".chat-messages");
+
+    // Criar e adicionar a mensagem do usuário
+    const message = document.createElement("div");
+    message.className = "message message-outgoing animate-message-pop";
+    message.innerHTML = `
+      ${text}
+      <div class="message-time">${getCurrentTime()}</div>
+    `;
+    chatMessages.appendChild(message);
+
+    // Limpar o input
+    messageInput.value = "";
+
+    // Rolar para a mensagem mais recente
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Mostrar "digitando..." após enviar a mensagem
+    setTimeout(() => {
+      showTypingIndicator();
+    }, 500);
+
+    // Simular resposta automática após um tempo
+    setTimeout(() => {
+      removeTypingIndicator();
+      showAutoResponse();
+    }, 3000);
+  }
+
+  function showTypingIndicator() {
+    const chatMessages = document.querySelector(".chat-messages");
+    const typingElement = document.createElement("div");
+    typingElement.className =
+      "message message-incoming animate-message-pop typing-indicator";
+    typingElement.innerHTML = `
+      <div class="message-typing">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    `;
+    chatMessages.appendChild(typingElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function removeTypingIndicator() {
+    const typingIndicator = document.querySelector(".typing-indicator");
+    if (typingIndicator) {
+      typingIndicator.remove();
+    }
+  }
+
+  function showAutoResponse() {
+    const chatMessages = document.querySelector(".chat-messages");
+    const responses = [
+      "Claro! Posso ajudar com isso. Nossos consultores entrarão em contato para apresentar a solução ideal para sua empresa.",
+      "Temos várias opções para atender empresas de todos os tamanhos. Podemos preparar um orçamento personalizado para você.",
+      "Excelente escolha! Nossa automação de e-commerce já ajudou centenas de empresas a aumentar suas vendas.",
+      "Os preços variam de acordo com as funcionalidades escolhidas. Vamos agendar uma demonstração gratuita para sua empresa?",
+    ];
+
+    const randomResponse =
+      responses[Math.floor(Math.random() * responses.length)];
+
+    const message = document.createElement("div");
+    message.className = "message message-incoming animate-message-pop";
+    message.innerHTML = `
+      ${randomResponse}
+      <div class="message-time">${getCurrentTime()}</div>
+    `;
+    chatMessages.appendChild(message);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Mostrar toast para enfatizar a interação
+    showToast("Você recebeu uma nova mensagem!", "info", 3000, "Chat Ativo");
+  }
+
+  function getCurrentTime() {
+    const now = new Date();
+    return `${String(now.getHours()).padStart(2, "0")}:${String(
+      now.getMinutes()
+    ).padStart(2, "0")}`;
+  }
 }
