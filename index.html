@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mirror Studio AI - Automação Inteligente</title>
 
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect x='2' y='4' width='20' height='7' rx='2' fill='%23ff5757'/%3E%3Crect x='2' y='13' width='20' height='7' rx='2' fill='%23ff5757' fill-opacity='0.7'/%3E%3Ccircle cx='7' cy='7.5' r='2' fill='white'/%3E%3Ccircle cx='17' cy='16.5' r='2' fill='white'/%3E%3C/svg%3E" type="image/svg+xml">
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="js/tailwind.config.js"></script>
@@ -39,8 +42,14 @@
     <div class="flex justify-between items-center mb-8">
       <div class="flex items-center space-x-2">
         <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ff5757"></path>
-          <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#ff5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          <rect x="2" y="4" width="20" height="7" rx="2" fill="#ff5757">
+            <animate attributeName="fill" values="#ff5757;#ff8f57;#a855f7;#ff5757" dur="8s" repeatCount="indefinite"></animate>
+          </rect>
+          <rect x="2" y="13" width="20" height="7" rx="2" fill="#ff5757" fill-opacity="0.7">
+            <animate attributeName="fill" values="#ff5757;#ff8f57;#a855f7;#ff5757" dur="8s" repeatCount="indefinite"></animate>
+          </rect>
+          <circle cx="7" cy="7.5" r="2" fill="white" />
+          <circle cx="17" cy="16.5" r="2" fill="white" />
         </svg>
         <span class="text-xl font-bold font-display">Mirror Studio AI</span>
       </div>
@@ -68,12 +77,14 @@
     <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-2">
         <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ff5757">
+          <rect x="2" y="4" width="20" height="7" rx="2" fill="#ff5757">
             <animate attributeName="fill" values="#ff5757;#ff8f57;#a855f7;#ff5757" dur="8s" repeatCount="indefinite"></animate>
-          </path>
-          <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#ff5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <animate attributeName="stroke" values="#ff5757;#ff8f57;#a855f7;#ff5757" dur="8s" repeatCount="indefinite"></animate>
-          </path>
+          </rect>
+          <rect x="2" y="13" width="20" height="7" rx="2" fill="#ff5757" fill-opacity="0.7">
+            <animate attributeName="fill" values="#ff5757;#ff8f57;#a855f7;#ff5757" dur="8s" repeatCount="indefinite"></animate>
+          </rect>
+          <circle cx="7" cy="7.5" r="2" fill="white" />
+          <circle cx="17" cy="16.5" r="2" fill="white" />
         </svg>
         <span class="text-xl font-bold font-display">Mirror Studio AI</span>
       </div>
@@ -1035,8 +1046,10 @@
         <div>
           <div class="flex items-center space-x-2 mb-6">
             <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#ff5757"></path>
-              <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#ff5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <rect x="2" y="4" width="20" height="7" rx="2" fill="#ff5757" />
+              <rect x="2" y="13" width="20" height="7" rx="2" fill="#ff5757" fill-opacity="0.7" />
+              <circle cx="7" cy="7.5" r="2" fill="white" />
+              <circle cx="17" cy="16.5" r="2" fill="white" />
             </svg>
             <span class="text-xl font-bold font-display">Mirror Studio AI</span>
           </div>
