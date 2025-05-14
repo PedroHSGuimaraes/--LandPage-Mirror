@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initDemoForm();
   initSmoothScrolling();
   initToastContainer(); // Inicializa o container para os toasts
+  checkFormSubmission(); // Verifica se o formulário foi enviado
 });
 
 /**
@@ -352,33 +353,82 @@ function closeToast(toast) {
 }
 
 /**
+ * Verifica se o formulário foi enviado com sucesso (após redirecionamento)
+ */
+function checkFormSubmission() {
+  // Verifica se existe o parâmetro 'enviado' na URL
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("enviado") === "true") {
+    // Exibe a mensagem de sucesso
+    const formSuccess = document.getElementById("form-success");
+    const demoForm = document.getElementById("demo-form");
+
+    if (formSuccess && demoForm) {
+      // Oculta o formulário e mostra a mensagem de sucesso
+      demoForm.classList.add("hidden");
+      formSuccess.classList.remove("hidden");
+
+      // Rolagem suave até a mensagem de sucesso
+      formSuccess.scrollIntoView({ behavior: "smooth" });
+
+      // Exibe um toast de sucesso
+      if (typeof showToast === "function") {
+        showToast("Formulário enviado com sucesso!", "success", 5000);
+      }
+
+      // Remove o parâmetro da URL para evitar mostrar a mensagem ao recarregar
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+}
+
+/**
  * Inicializa o formulário de demonstração
  */
 function initDemoForm() {
   const demoForm = document.getElementById("demo-form");
 
   if (demoForm) {
+    // Adiciona animação ao botão de envio
+    const submitButton = demoForm.querySelector("button[type='submit']");
+    if (submitButton) {
+      submitButton.addEventListener("mouseenter", function () {
+        this.classList.add("pulse-animation");
+      });
+      submitButton.addEventListener("mouseleave", function () {
+        this.classList.remove("pulse-animation");
+      });
+    }
+
+    // Adiciona validação personalizada antes do envio
     demoForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+      // Verifica se pelo menos uma opção de interesse foi selecionada
+      const checkboxes = this.querySelectorAll('input[type="checkbox"]');
+      let atLeastOneChecked = false;
 
-      // Verifica se todos os campos obrigatórios estão preenchidos
-      const name = this.querySelector("#name").value.trim();
-      const email = this.querySelector("#email").value.trim();
+      checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+          atLeastOneChecked = true;
+        }
+      });
 
-      if (!name || !email) {
-        showToast("Por favor, preencha todos os campos obrigatórios.", "error");
-        return;
+      if (!atLeastOneChecked && checkboxes.length > 0) {
+        e.preventDefault();
+        if (typeof showToast === "function") {
+          showToast(
+            "Por favor, selecione pelo menos uma opção de interesse.",
+            "error"
+          );
+        } else {
+          alert("Por favor, selecione pelo menos uma opção de interesse.");
+        }
+        return false;
       }
 
-      // Exibe toast de sucesso
-      showToast(
-        "Obrigado! Entraremos em contato em breve para agendar sua consultoria.",
-        "success",
-        5000
-      );
-
-      // Reseta o formulário
-      this.reset();
+      // Se passar na validação, exibe indicador de carregamento no botão
+      submitButton.innerHTML =
+        '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+      submitButton.disabled = true;
     });
   }
 }
