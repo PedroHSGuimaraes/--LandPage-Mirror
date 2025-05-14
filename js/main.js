@@ -55,27 +55,60 @@ function initMobileMenu() {
   const closeMenuButton = document.getElementById("closeMenuButton");
   const mobileMenu = document.getElementById("mobileMenu");
   const overlay = document.getElementById("overlay");
+  const mobileMenuLinks = mobileMenu ? mobileMenu.querySelectorAll("a") : [];
+
+  // Função para fechar o menu
+  const closeMenu = function () {
+    if (mobileMenu && overlay) {
+      mobileMenu.classList.remove("open");
+      overlay.classList.remove("active");
+      // Permitir scroll da página ao fechar o menu
+      document.body.classList.remove("no-scroll");
+    }
+  };
 
   if (mobileMenuTrigger && mobileMenu && overlay) {
-    mobileMenuTrigger.addEventListener("click", function () {
+    mobileMenuTrigger.addEventListener("click", function (e) {
+      e.preventDefault();
       mobileMenu.classList.add("open");
       overlay.classList.add("active");
+      // Impedir scroll da página quando o menu estiver aberto
+      document.body.classList.add("no-scroll");
     });
   }
 
   if (closeMenuButton && mobileMenu && overlay) {
-    closeMenuButton.addEventListener("click", function () {
-      mobileMenu.classList.remove("open");
-      overlay.classList.remove("active");
+    closeMenuButton.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeMenu();
     });
   }
 
   if (overlay && mobileMenu) {
     overlay.addEventListener("click", function () {
-      mobileMenu.classList.remove("open");
-      overlay.classList.remove("active");
+      closeMenu();
     });
   }
+
+  // Fechar o menu ao clicar em links internos
+  if (mobileMenuLinks.length > 0) {
+    mobileMenuLinks.forEach((link) => {
+      link.addEventListener("click", function () {
+        closeMenu();
+      });
+    });
+  }
+
+  // Fechar o menu ao pressionar a tecla ESC
+  document.addEventListener("keydown", function (e) {
+    if (
+      e.key === "Escape" &&
+      mobileMenu &&
+      mobileMenu.classList.contains("open")
+    ) {
+      closeMenu();
+    }
+  });
 }
 
 /**
