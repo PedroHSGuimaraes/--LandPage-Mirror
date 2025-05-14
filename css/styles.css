@@ -836,3 +836,373 @@ body {
     width: 0%;
   }
 }
+
+/* Mini Smartphone (Como Funciona) */
+.mini-smartphone {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  background-color: #1a1a1a;
+  overflow: hidden;
+  padding: 8px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1), 0 8px 20px rgba(0, 0, 0, 0.5);
+  transform: perspective(800px) rotateX(5deg);
+  transition: transform 0.3s ease;
+}
+
+.group:hover .mini-smartphone {
+  transform: perspective(800px) rotateX(5deg) scale(1.02);
+}
+
+.mini-smartphone-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  background-color: #121212;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-chat-header {
+  background-color: #1f1f1f;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mini-chat-avatar {
+  width: 20px;
+  height: 20px;
+  background-color: #ff5757;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mini-chat-name {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.mini-chat-messages {
+  flex: 1;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.mini-message {
+  max-width: 80%;
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  line-height: 1.3;
+  position: relative;
+}
+
+.mini-message-incoming {
+  background-color: #2a2a2a;
+  color: #fff;
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+
+.mini-message-outgoing {
+  background-color: #ff5757;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.mini-notification {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  max-width: 180px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.mini-notification-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ff5757;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.mini-notification-content {
+  flex: 1;
+}
+
+.mini-notification-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #121212;
+}
+
+.mini-notification-message {
+  font-size: 8px;
+  color: #4a4a4a;
+}
+
+/* Development Interface */
+.mini-dev-interface {
+  display: flex;
+  flex: 1;
+  padding: 4px;
+}
+
+.mini-dev-sidebar {
+  width: 80px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 4px;
+}
+
+.mini-dev-option {
+  padding: 6px 4px;
+  font-size: 10px;
+  color: #8a8a8a;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.mini-dev-active {
+  background-color: #ff5757;
+  color: white;
+}
+
+.mini-dev-content {
+  flex: 1;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mini-dev-section {
+  background-color: #1f1f1f;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.mini-dev-field {
+  height: 8px;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.mini-dev-blocks {
+  display: flex;
+  gap: 6px;
+}
+
+.mini-dev-block {
+  flex: 1;
+  height: 60px;
+  background-color: #1f1f1f;
+  border-radius: 6px;
+  border: 1px solid #2a2a2a;
+}
+
+.mini-dev-active-block {
+  border-color: #ff5757;
+}
+
+/* Training Interface */
+.mini-training-interface {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 16px 12px;
+  gap: 20px;
+}
+
+.mini-training-progress {
+  padding: 4px;
+}
+
+.mini-training-bar {
+  height: 10px;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.mini-training-fill {
+  width: 75%;
+  height: 100%;
+  background-color: #ff5757;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.mini-training-text {
+  font-size: 10px;
+  color: #8a8a8a;
+  text-align: center;
+}
+
+.mini-training-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mini-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-step-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #2a2a2a;
+}
+
+.mini-step-text {
+  font-size: 10px;
+  color: #8a8a8a;
+}
+
+.mini-step-complete .mini-step-dot {
+  border-color: #4caf50;
+  background-color: #4caf50;
+}
+
+.mini-step-complete .mini-step-text {
+  color: #4caf50;
+}
+
+.mini-step-active .mini-step-dot {
+  border-color: #ff5757;
+  background-color: #ff5757;
+}
+
+.mini-step-active .mini-step-text {
+  color: #ff5757;
+}
+
+/* Analytics Interface */
+.mini-analytics-interface {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 8px;
+  gap: 10px;
+}
+
+.mini-analytics-header {
+  text-align: center;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mini-analytics-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
+}
+
+.mini-analytics-period {
+  font-size: 8px;
+  color: #8a8a8a;
+}
+
+.mini-analytics-chart {
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 0 4px;
+}
+
+.mini-chart-bar {
+  flex: 1;
+  background-color: rgba(255, 87, 87, 0.4);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.3s ease;
+}
+
+.mini-chart-bar-highlight {
+  background-color: #ff5757;
+  position: relative;
+}
+
+.mini-chart-bar-highlight::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ff5757;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px #ff5757;
+}
+
+.mini-analytics-stats {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+}
+
+.mini-stat {
+  text-align: center;
+}
+
+.mini-stat-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.mini-stat-label {
+  font-size: 8px;
+  color: #8a8a8a;
+}
