@@ -21,9 +21,73 @@
 
   <!-- CSS Personalizado -->
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Estilos inline para corrigir scrollbar -->
+  <style>
+    html,
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    /* Esconder a barra de rolagem em navegadores WebKit (Chrome, Safari, Edge moderno) */
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Para Firefox */
+    body {
+      scrollbar-width: none;
+    }
+
+    /* Para IE e Edge */
+    body {
+      -ms-overflow-style: none;
+    }
+
+    /* Personalização da scrollbar para outros elementos (não o body) */
+    /* Estilo para WebKit (Chrome, Safari, Edge moderno) */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ff5757;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff3c3c;
+    }
+
+    /* Estilo para Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #ff5757 rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+      max-width: 100%;
+    }
+
+    section {
+      overflow-x: hidden;
+    }
+
+    .marquee-content {
+      max-width: 100%;
+    }
+  </style>
 </head>
 
-<body class="bg-brand-dark text-brand-light font-sans custom-scrollbar">
+<body class="bg-brand-dark text-brand-light font-sans custom-scrollbar overflow-x-hidden">
   <!-- Toast Notifications Container -->
   <div class="toast-container" id="toastContainer"></div>
 
@@ -66,7 +130,9 @@
       <a href="#how-it-works" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Como Funciona</a>
       <a href="#testimonials" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Depoimentos</a>
       <a href="#pricing" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Preços</a>
-      <a href="https://api.whatsapp.com/send?phone=5531992739010&text=Olá!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20as%20soluções%20de%20automação%20para%20e-commerce.%20Poderia%20me%20ajudar?" class="text-brand-light hover:text-brand-accent transition-colors text-lg">Contato</a>
+      <a href="https://api.whatsapp.com/send?phone=5531992739010&amp;text=Olá!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20as%20soluções%20de%20automação%20para%20e-commerce.%20Poderia%20me%20ajudar?" class="flex items-center text-brand-light hover:text-brand-accent transition-colors text-lg">
+        <i class="fab fa-whatsapp mr-2"></i> Contato
+      </a>
     </div>
     <div class="mt-8">
       <a href="#demo" class="block w-full px-6 py-3 rounded-full bg-brand-accent text-white hover:bg-brand-accent-dark transition-all text-center">
@@ -101,7 +167,9 @@
       </div>
 
       <div class="flex items-center space-x-4">
-        <a href="https://api.whatsapp.com/send?phone=5531992739010&text=Olá!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20as%20soluções%20de%20automação%20para%20e-commerce.%20Poderia%20me%20ajudar?" class="hidden md:block px-6 py-2 rounded-full bg-transparent border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white transition-all">Contato</a>
+        <a href="https://api.whatsapp.com/send?phone=5531992739010&amp;text=Olá!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20as%20soluções%20de%20automação%20para%20e-commerce.%20Poderia%20me%20ajudar?" class="hidden md:flex items-center px-6 py-2 rounded-full bg-transparent border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-white transition-all">
+          <i class="fab fa-whatsapp mr-2 text-lg"></i> WhatsApp
+        </a>
         <a href="#demo" class="px-6 py-2 rounded-full bg-brand-accent text-white hover:bg-brand-accent-dark transition-all">Demonstração</a>
         <button class="md:hidden text-2xl" id="mobileMenuTrigger">
           <i class="fas fa-bars"></i>
@@ -135,8 +203,9 @@
               <span class="relative z-10">Começar agora</span>
               <span class="absolute top-0 left-0 w-full h-full bg-white/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
             </a>
-            <a href="https://api.whatsapp.com/send?phone=5531992739010&text=Olá!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20as%20soluções%20de%20automação%20para%20e-commerce.%20Poderia%20me%20ajudar?" class="px-8 py-3 rounded-full bg-transparent border border-brand-gray-light text-brand-light font-medium hover:border-brand-accent hover:text-brand-accent transition-all text-center group">
-              <span>Saiba mais</span>
+            <a href="https://api.whatsapp.com/send?phone=5531992739010&amp;text=Olá!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20as%20soluções%20de%20automação%20para%20e-commerce.%20Poderia%20me%20ajudar?" class="flex items-center justify-center px-8 py-3 rounded-full bg-transparent border border-brand-gray-light text-brand-light font-medium hover:border-brand-accent hover:text-brand-accent transition-all text-center group">
+              <i class="fab fa-whatsapp mr-2"></i>
+              <span>Fale conosco</span>
               <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
             </a>
           </div>
@@ -161,7 +230,7 @@
             </div>
           </div>
         </div>
-        <div class="md:w-1/2 relative perspective flex justify-center">
+        <div class="md:w-1/2 relative perspective flex justify-center overflow-visible">
           <div class="smartphone">
             <div class="smartphone-screen">
               <div class="chat-header">
@@ -170,13 +239,15 @@
                 </div>
                 <div class="chat-avatar">
                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="2" y="4" width="20" height="7" rx="2" fill="#ff5757" />
-                    <rect x="2" y="13" width="20" height="7" rx="2" fill="#ff5757" fill-opacity="0.7" />
-                    <circle cx="7" cy="7.5" r="2" fill="white" />
-                    <circle cx="17" cy="16.5" r="2" fill="white" />
+                    <!-- Cabide (símbolo de loja de roupas) -->
+                    <path d="M12 4C10.9 4 10 4.9 10 6C10 6.9 10.6 7.7 11.5 7.9L8 17H16L12.5 7.9C13.4 7.7 14 6.9 14 6C14 4.9 13.1 4 12 4Z" fill="#ff5757" />
+                    <!-- Base do cabide -->
+                    <rect x="7" y="17" width="10" height="3" rx="1" fill="#ff5757" fill-opacity="0.7" />
+                    <!-- Círculo decorativo -->
+                    <circle cx="12" cy="6" r="1.5" fill="white" />
                   </svg>
                 </div>
-                <div class="chat-name">Assistente Mirror AI</div>
+                <div class="chat-name">ModaStyle</div>
                 <div class="chat-actions">
                   <div class="chat-action">
                     <i class="fas fa-phone"></i>
@@ -188,23 +259,23 @@
               </div>
               <div class="chat-messages">
                 <div class="message message-incoming animate-message-pop">
-                  Olá! Sou o assistente virtual da Mirror Studio AI. Como posso ajudar sua empresa hoje?
+                  Olá! Bem-vindo à ModaStyle. Como posso ajudar você hoje? 😊
                   <div class="message-time">10:05</div>
                 </div>
                 <div class="message message-outgoing animate-message-pop" style="animation-delay: 1s;">
-                  Preciso automatizar o atendimento ao cliente do meu e-commerce.
+                  Oi! Vocês têm calça jeans disponível? Quais cores?
                   <div class="message-time">10:06</div>
                 </div>
                 <div class="message message-incoming animate-message-pop" style="animation-delay: 2s;">
-                  Claro! Posso ajudar com isso. Nosso sistema de automação para e-commerce pode reduzir até 80% do tempo de atendimento.
+                  Sim, temos diversos modelos de calça jeans! Atualmente estão disponíveis nas cores: azul escuro, azul claro, preto e cinza.
                   <div class="message-time">10:07</div>
                 </div>
                 <div class="message message-incoming animate-message-pop" style="animation-delay: 3s;">
-                  Oferecemos integração com WhatsApp, chat no site, e-mail e redes sociais. Tudo em uma única plataforma!
+                  Também temos uma promoção especial: na compra de 2 calças, a segunda sai com 30% de desconto!
                   <div class="message-time">10:07</div>
                 </div>
                 <div class="message message-outgoing animate-message-pop" style="animation-delay: 4s;">
-                  Ótimo! E quanto custa essa solução?
+                  Perfeito! Vocês entregam para São Paulo? Qual o prazo?
                   <div class="message-time">10:08</div>
                 </div>
                 <div class="message message-incoming animate-message-pop" style="animation-delay: 5s;">
@@ -226,10 +297,10 @@
             </div>
           </div>
 
-          <!-- Floating Elements -->
-          <div class="absolute -top-10 -right-10 w-24 h-24 bg-brand-gray rounded-lg p-2 rotate-12 animate-float-slow shadow-lg hidden sm:block">
+          <!-- Ajuste nos elementos flutuantes -->
+          <div class="absolute -top-5 -right-5 w-20 h-20 bg-brand-gray rounded-lg p-2 rotate-12 animate-float-slow shadow-lg hidden sm:block">
             <div class="bg-brand-darker rounded-lg h-full w-full flex items-center justify-center">
-              <i class="fas fa-robot text-2xl text-brand-accent"></i>
+              <i class="fas fa-robot text-xl text-brand-accent"></i>
             </div>
           </div>
           <div class="absolute -bottom-5 -left-5 w-20 h-20 bg-brand-gray rounded-full p-2 animate-float shadow-lg hidden sm:block">
@@ -417,21 +488,23 @@
                 <div class="chat-header">
                   <div class="chat-avatar">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="2" y="4" width="20" height="7" rx="2" fill="#ff5757" />
-                      <rect x="2" y="13" width="20" height="7" rx="2" fill="#ff5757" fill-opacity="0.7" />
-                      <circle cx="7" cy="7.5" r="2" fill="white" />
-                      <circle cx="17" cy="16.5" r="2" fill="white" />
+                      <!-- Cabide (símbolo de loja de roupas) -->
+                      <path d="M12 4C10.9 4 10 4.9 10 6C10 6.9 10.6 7.7 11.5 7.9L8 17H16L12.5 7.9C13.4 7.7 14 6.9 14 6C14 4.9 13.1 4 12 4Z" fill="#ff5757" />
+                      <!-- Base do cabide -->
+                      <rect x="7" y="17" width="10" height="3" rx="1" fill="#ff5757" fill-opacity="0.7" />
+                      <!-- Círculo decorativo -->
+                      <circle cx="12" cy="6" r="1.5" fill="white" />
                     </svg>
                   </div>
-                  <div class="chat-name">IA Inteligente</div>
+                  <div class="chat-name">ModaStyle</div>
                 </div>
                 <div class="chat-messages">
                   <div class="message message-incoming animate-message-pop">
-                    Posso ajudar a analisar seus dados de vendas e identificar tendências.
+                    Temos novas calças jeans no estilo boyfriend que acabaram de chegar! Disponíveis em azul e preto.
                     <div class="message-time">14:30</div>
                   </div>
                   <div class="message message-outgoing animate-message-pop" style="animation-delay: 1s;">
-                    Quais são os produtos mais vendidos este mês?
+                    Qual o preço das calças jeans boyfriend? Vocês têm no tamanho 40?
                     <div class="message-time">14:31</div>
                   </div>
                   <div class="message message-incoming animate-message-pop" style="animation-delay: 2s;">
