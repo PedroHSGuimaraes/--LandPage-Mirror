@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initToastContainer(); // Inicializa o container para os toasts
   checkFormSubmission(); // Verifica se o formulário foi enviado
   initChatInterface(); // Inicializa a interface de chat do smartphone
+  initFeaturePhone(); // Inicializa a interação do segundo smartphone
 });
 
 /**
@@ -593,4 +594,47 @@ function initChatInterface() {
       now.getMinutes()
     ).padStart(2, "0")}`;
   }
+}
+
+/**
+ * Inicializa a interação do segundo smartphone (feature-smartphone)
+ */
+function initFeaturePhone() {
+  const featurePhone = document.querySelector('.feature-smartphone');
+  
+  if (!featurePhone) return;
+  
+  // Efeito de rotação 3D ao mover o mouse
+  featurePhone.addEventListener('mousemove', function(e) {
+    const phoneRect = featurePhone.getBoundingClientRect();
+    const phoneX = phoneRect.left + phoneRect.width / 2;
+    const phoneY = phoneRect.top + phoneRect.height / 2;
+    
+    const mouseX = e.clientX - phoneX;
+    const mouseY = e.clientY - phoneY;
+    
+    // Limita o ângulo de rotação
+    const rotateY = Math.min(Math.max(-mouseX / (phoneRect.width / 2) * 15, -30), 0);
+    const rotateX = Math.min(Math.max(-mouseY / (phoneRect.height / 2) * 10, -10), 10);
+    
+    // Aplica a rotação com suavidade
+    featurePhone.style.transition = 'transform 0.1s ease-out';
+    featurePhone.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(30px)`;
+  });
+  
+  // Volta à posição original quando o mouse sai
+  featurePhone.addEventListener('mouseleave', function() {
+    featurePhone.style.transition = 'transform 0.5s ease-out';
+    featurePhone.style.transform = ''; // Remove o estilo inline para voltar ao CSS original
+  });
+  
+  // Efeito de "clique" quando pressionado
+  featurePhone.addEventListener('mousedown', function() {
+    featurePhone.style.transform = `perspective(1000px) rotateY(-15deg) rotateX(0deg) translateZ(0px) scale(0.98)`;
+  });
+  
+  // Volta ao estado normal após soltar o clique
+  featurePhone.addEventListener('mouseup', function() {
+    featurePhone.style.transform = `perspective(1000px) rotateY(-20deg) rotateX(5deg) translateZ(30px)`;
+  });
 }

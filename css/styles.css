@@ -1402,14 +1402,94 @@ body {
 }
 
 .feature-smartphone {
-  transform: scale(0.8);
+  transform: perspective(1000px) rotateY(-25deg) rotateX(5deg) translateZ(20px);
   margin: 0 auto;
+  box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.5);
+  animation: feature-phone-float 6s ease-in-out infinite;
+  position: relative;
+  overflow: visible;
+  transition: all 0.5s ease;
+}
+
+/* Animação para o segundo smartphone (feature) */
+@keyframes feature-phone-float {
+  0% {
+    transform: perspective(1000px) rotateY(-25deg) rotateX(5deg)
+      translateZ(20px) translateY(0);
+  }
+  50% {
+    transform: perspective(1000px) rotateY(-20deg) rotateX(8deg)
+      translateZ(30px) translateY(-10px);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(-25deg) rotateX(5deg)
+      translateZ(20px) translateY(0);
+  }
+}
+
+/* Efeito de brilho lateral para o smartphone da feature */
+.feature-smartphone::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 36px;
+  pointer-events: none;
+  animation: feature-glare 4s ease-in-out infinite;
+}
+
+@keyframes feature-glare {
+  0% {
+    opacity: 0.3;
+    background-position: -300px 0;
+  }
+  100% {
+    opacity: 0.7;
+    background-position: 300px 0;
+  }
+}
+
+/* Efeito de hover somente para o feature-smartphone */
+.feature-smartphone:hover {
+  transform: perspective(1000px) rotateY(-10deg) rotateX(2deg) translateZ(40px)
+    scale(1.05);
+  box-shadow: 25px 25px 40px rgba(255, 87, 87, 0.3);
 }
 
 @media (max-width: 768px) {
   .feature-smartphone {
-    transform: scale(0.9);
+    transform: perspective(1000px) rotateY(-15deg) rotateX(3deg)
+      translateZ(10px);
     max-height: 450px;
+    animation: feature-phone-float-mobile 6s ease-in-out infinite;
+  }
+
+  @keyframes feature-phone-float-mobile {
+    0% {
+      transform: perspective(1000px) rotateY(-15deg) rotateX(3deg)
+        translateZ(10px) translateY(0);
+    }
+    50% {
+      transform: perspective(1000px) rotateY(-12deg) rotateX(5deg)
+        translateZ(15px) translateY(-8px);
+    }
+    100% {
+      transform: perspective(1000px) rotateY(-15deg) rotateX(3deg)
+        translateZ(10px) translateY(0);
+    }
+  }
+
+  .feature-smartphone:hover {
+    transform: perspective(1000px) rotateY(-5deg) rotateX(1deg) translateZ(20px)
+      scale(1.02);
   }
 }
 
